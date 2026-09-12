@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personvernerklæring – Loff metrics</title>
+<style>
+  :root { color-scheme: light dark; --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e;
+          --muted: #898781; --border: rgba(11,11,11,0.10); --link: #2a78d6; }
+  @media (prefers-color-scheme: dark) {
+    :root { --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7; --muted: #898781;
+            --border: rgba(255,255,255,0.10); --link: #3987e5; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--ink);
+         font: 16px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 700px; margin: 0 auto; padding: 56px 20px 80px; }
+  h1 { font-size: 28px; letter-spacing: -0.02em; margin: 0 0 6px; }
+  .updated { color: var(--muted); font-size: 14px; margin: 0 0 32px; }
+  h2 { font-size: 17px; margin: 34px 0 8px; }
+  a { color: var(--link); }
+  ul { padding-left: 22px; }
+  li { margin: 5px 0; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px;
+          margin: 20px 0; }
+  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--muted);
+           font-size: 14px; }
+  .en { color: var(--ink-2); font-size: 15px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Personvernerklæring</h1>
+  <p class="updated">Loff metrics · sist oppdatert 12. september 2026</p>
+
+  <p>Loff metrics er et internt analyseverktøy som brukes av Lucky View for å følge statistikken til Loff sine
+    egne kontoer i sosiale medier. Denne erklæringen beskriver hvilke data verktøyet behandler.</p>
+
+  <div class="card">
+    <p>Verktøyet behandler <strong>ingen personopplysninger om publikum eller følgere</strong>. Det henter
+      kun tall som allerede er tilgjengelige for kontoeieren selv, i sammenstilt form.</p>
+  </div>
+
+  <h2>Hvilke data behandles</h2>
+  <ul>
+    <li><strong>Statistikk på kontonivå:</strong> antall følgere, rekkevidde, visninger, likes, kommentarer,
+      delinger og lagringer per dag.</li>
+    <li><strong>Data om egne publiseringer:</strong> tittel eller bildetekst, lenke, publiseringstidspunkt og
+      tallene for det enkelte innlegget.</li>
+    <li><strong>Tilgangsnøkler:</strong> tokens som gir lesetilgang til kontoene. De lagres kryptert.</li>
+  </ul>
+  <p>Verktøyet henter ikke meldinger, kommentarteksten til andre, kontaktlister eller opplysninger om
+    enkeltpersoner, og det kan ikke publisere, endre eller slette innhold.</p>
+
+  <h2>Bruk av data fra Google og YouTube</h2>
+  <p>Verktøyet bruker YouTube Data API, YouTube Analytics API og YouTube Reporting API med lesetilgang
+    (<code>youtube.readonly</code> og <code>yt-analytics.readonly</code>), autorisert av kontoen som
+    administrerer YouTube-kanalen.</p>
+  <ul>
+    <li>Dataene brukes kun til å vise statistikk for kanalen i et privat dashboard og i en intern ukesrapport.</li>
+    <li>Dataene deles ikke med tredjeparter, selges ikke, og brukes ikke til annonsering eller profilering.</li>
+    <li>Bruken følger <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API
+      Services User Data Policy</a>, inkludert kravene om begrenset bruk.</li>
+    <li>Tilgangen kan trekkes tilbake når som helst på
+      <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>. Da stopper
+      innhentingen umiddelbart.</li>
+  </ul>
+  <p>Tilsvarende gjelder for Instagram, TikTok og Snapchat: verktøyet bruker plattformenes offisielle
+    API-er med lesetilgang, autorisert av kontoeieren, og tilgangen kan trekkes tilbake i
+    innstillingene på hver plattform.</p>
+
+  <h2>Lagring og sikkerhet</h2>
+  <ul>
+    <li>Tallene lagres i en database i et <strong>privat</strong> kodelager hos GitHub, som bare Lucky View
+      har tilgang til.</li>
+    <li>Tilgangsnøkler lagres kryptert, eller som krypterte hemmeligheter hos GitHub. De vises ikke i logger.</li>
+    <li>Dataene lagres så lenge verktøyet er i bruk, og slettes på forespørsel.</li>
+  </ul>
+
+  <h2>Bruk av AI</h2>
+  <p>Den ukentlige rapporten lages ved å sende de sammenstilte tallene til Anthropics Claude API, som
+    returnerer en tekstlig analyse. Det sendes ingen personopplysninger, og dataene brukes ikke til å
+    trene modeller.</p>
+
+  <h2>Ansvarlig og kontakt</h2>
+  <p>Behandlingsansvarlig er Lucky View, Schleppegrells gate 8, 0556 Oslo.
+    Spørsmål, innsyn eller sletting: <a href="mailto:kontakt@luckyview.no">kontakt@luckyview.no</a>.</p>
+
+  <h2>Denne nettsiden</h2>
+  <p>Siden inneholder ingen sporing, ingen informasjonskapsler og ingen analyseverktøy.</p>
+
+  <h2 class="en">In English</h2>
+  <p class="en">Loff metrics is an internal analytics tool used by Lucky View to track the performance of its
+    own social media accounts. It reads aggregated statistics (followers, reach, views, likes, comments,
+    shares, saves) and metadata about its own posts, using the platforms' official read-only APIs as
+    authorized by the account owner. Data from Google APIs is used solely to display statistics in a private
+    dashboard and an internal weekly report; it is never shared with third parties, sold, or used for
+    advertising, and its use complies with the Google API Services User Data Policy, including the Limited Use
+    requirements. Access can be revoked at any time at myaccount.google.com/permissions. No personal data
+    about audiences or followers is processed. Contact: kontakt@luckyview.no.</p>
+
+  <footer><a href="index.html">← Loff metrics</a></footer>
+</main>
+</body>
+</html>
