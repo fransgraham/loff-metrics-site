@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Loff – statistikk</title>
+<style>
+  /* Loff-profilen: krem bunn, fiolett tekst, gul aksent, Fira Sans. Hentet fra loff.no. */
+  @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,500;0,700;0,800;1,700&display=swap");
+  :root {
+    color-scheme: light;
+    --page: #f8fcef;
+    --surface: #ffffff;
+    --ink: #1e103b;
+    --ink-2: #4a3d66;
+    --muted: #7c7295;
+    --grid: rgba(30,16,59,0.10);
+    --axis: rgba(30,16,59,0.22);
+    --border: rgba(30,16,59,0.14);
+    --accent: #fff24d;
+    --up: #176b3e;
+    --down: #b3253c;
+    --instagram: #5b3fd4;
+    --youtube: #d93a1e;
+    --tiktok: #0f8a7e;
+    /* Logoen er svart, som på loff.no. I mørk modus snus den til hvit. */
+    --logo-filter: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page: #151029; --surface: #1e1838; --ink: #f8fcef; --ink-2: #bfb6d9; --muted: #8c83a8;
+      --grid: rgba(248,252,239,0.10); --axis: rgba(248,252,239,0.24); --border: rgba(248,252,239,0.14);
+      --accent: #fff24d; --up: #4fd08a; --down: #ff8a9b;
+      --instagram: #9b7bff; --youtube: #ff7a52; --tiktok: #3fd0ba;
+      --logo-filter: brightness(0) invert(1);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #151029; --surface: #1e1838; --ink: #f8fcef; --ink-2: #bfb6d9; --muted: #8c83a8;
+    --grid: rgba(248,252,239,0.10); --axis: rgba(248,252,239,0.24); --border: rgba(248,252,239,0.14);
+    --accent: #fff24d; --up: #4fd08a; --down: #ff8a9b;
+    --instagram: #9b7bff; --youtube: #ff7a52; --tiktok: #3fd0ba;
+    --logo-filter: brightness(0) invert(1);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--ink);
+         font: 400 14px/1.55 "Fira Sans", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 32px 20px 64px; }
+  header h1 { margin: 0 0 10px; line-height: 0; }
+  header h1 img { height: 54px; width: auto; filter: var(--logo-filter); }
+  header p { margin: 0; color: var(--ink-2); }
+  h2 { font-size: 16px; font-weight: 700; margin: 0; letter-spacing: 0.2px; }
+  a { color: inherit; }
+  .muted { color: var(--muted); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 24px 0; }
+  .card, .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+  .card { padding: 16px; }
+  .card-head { display: flex; align-items: center; gap: 8px; color: var(--ink-2); }
+  .card-head a { text-decoration: none; color: var(--muted); margin-left: auto; font-size: 12px; }
+  .card-head strong { font-weight: 700; font-style: italic; color: var(--ink); }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .hero { font-size: 34px; font-weight: 800; margin: 10px 0 0; letter-spacing: -0.02em;
+          font-variant-numeric: tabular-nums; }
+  .hero-sub { color: var(--ink-2); font-size: 13px; min-height: 20px; }
+  .kpis { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; margin-top: 12px; padding-top: 12px;
+          border-top: 1px solid var(--border); font-size: 13px; }
+  .kpis dt { color: var(--ink-2); }
+  .kpis dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .delta { font-size: 12px; margin-left: 6px; }
+  .delta.up { color: var(--up); } .delta.down { color: var(--down); }
+  .card.empty { color: var(--muted); }
+
+  .panel { padding: 20px; margin-bottom: 16px; }
+  .panel-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .controls { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-left: auto; min-width: 0;
+              max-width: 100%; }
+  .seg { display: inline-flex; max-width: 100%; overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+  .seg button { font: inherit; font-size: 13px; background: none; color: var(--ink-2); border: 0; padding: 6px 10px;
+                cursor: pointer; white-space: nowrap; }
+  .seg button + button { border-left: 1px solid var(--border); }
+  .seg button[aria-pressed="true"] { background: var(--accent); color: #1e103b; font-weight: 700; }
+  .seg button:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+  .chart-wrap { position: relative; height: 340px; }
+  .chart-empty { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: var(--muted); }
+  [hidden] { display: none !important; }
+  .note { color: var(--muted); font-size: 12px; margin: 12px 0 0; }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap;
+           font-variant-numeric: tabular-nums; }
+  th { color: var(--ink-2); font-weight: 500; cursor: pointer; user-select: none; }
+  th:nth-child(-n+3), td:nth-child(-n+3) { text-align: left; }
+  td.caption { white-space: normal; min-width: 240px; max-width: 420px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; }
+
+  .report { max-width: 760px; font-size: 15px; line-height: 1.6; }
+  .report h1, .report h2, .report h3 { font-size: 16px; margin: 1.4em 0 0.4em; }
+  .report table { font-size: 13px; margin: 12px 0; }
+  .report th, .report td { text-align: left; }
+
+  .status { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 13px; color: var(--ink-2); }
+  details { margin-top: 16px; color: var(--ink-2); font-size: 13px; }
+  details p { margin: 6px 0; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<main>
+  <header>
+    <h1><img id="logo" src="data:image/png;base64,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" alt="Loff"></h1>
+    <p id="subtitle"></p>
+  </header>
+
+  <section class="panel" id="auth-banner" hidden>
+    <h2>Innlogging fullført</h2>
+    <p>Kopier hele adressen i adressefeltet og lim den inn som <em>redirect_url</em> i workflowen
+      «Autoriser plattform» (action: exchange). Koden utløper etter noen minutter.</p>
+  </section>
+
+  <section class="cards" id="cards"></section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>Utvikling per dag</h2>
+      <div class="controls">
+        <div class="seg" id="metric" role="group" aria-label="Metrikk"></div>
+        <div class="seg" id="range" role="group" aria-label="Periode"></div>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="chart" aria-label="Linjediagram per plattform"></canvas>
+      <p class="chart-empty" id="chart-empty" hidden>Ingen data for denne metrikken i perioden ennå.</p>
+    </div>
+    <p class="note" id="metric-note"></p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Innlegg siste 28 dager, sortert etter engasjement</h2></div>
+    <div class="table-wrap"><table id="posts"></table></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>AI-analyse</h2></div>
+    <div class="report"><!-- Generert 2026-09-14 av claude-opus-5 -->
+
+<h1>Ukesrapport Loff — uke 37 (7.–13. september 2026)</h1>
+<p><em>Rapportdato: 14.09.2026. Sammenlignet med 31.08.–06.09.</em></p>
+<h2>De viktigste funnene</h2>
+<ol>
+<li><strong>Uken er drevet av tre innlegg, publisert på to dager.</strong> Instagram-reelen om toll (12.09) og de to YouTube-videoene fra «Mektig mat med makta» (11.09) forklarer så godt som hele oppgangen. Resten av uken lå Instagram på 300–700 visninger/dag og YouTube på ~870/dag.</li>
+<li><strong>Instagram hadde sin beste uke i måleperioden:</strong> 73 890 visninger (+409 %), sum daglig rekkevidde 15 929 (+297 %), engasjementsrate 8,9 % mot 5,7 % uken før.</li>
+<li><strong>YouTube fikk en tydelig lansering:</strong> 12 329 visninger på 11.09 mot en baseline på ~900/dag, og 44 018 minutter seertid på én dag. Merk: YouTube-tallene for uken dekker bare 07.–11.09 (Analytics ligger 2–3 dager bak), så de reelle uketallene blir høyere.</li>
+<li><strong>TikTok står stille redaksjonelt.</strong> Ingen ny video siden 24. august. De 2 505 visningene de to dagene vi har data på er restetrafikk fra gamle videoer – ikke ny distribusjon. Dette er den største uutnyttede muligheten akkurat nå (45 830 følgere).</li>
+<li><strong>Publiseringsvolumet er lavt:</strong> 1 IG-reel, 2 YouTube-videoer, 0 TikTok på en hel uke. Når én reel alene bærer uken, er svingningene i tallene et publiseringsproblem, ikke et algoritmeproblem.</li>
+</ol>
+<hr />
+<h2>Per plattform</h2>
+<h3>Instagram (26 035 følgere)</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Denne uken</th>
+<th>Forrige uke</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Visninger</td>
+<td>73 890</td>
+<td>14 517</td>
+</tr>
+<tr>
+<td>Sum daglig rekkevidde</td>
+<td>15 929</td>
+<td>4 012</td>
+</tr>
+<tr>
+<td>Engasjement</td>
+<td>1 418</td>
+<td>228</td>
+</tr>
+<tr>
+<td>Engasjementsrate</td>
+<td>8,9 %</td>
+<td>5,7 %</td>
+</tr>
+<tr>
+<td>Delinger</td>
+<td>283</td>
+<td>35</td>
+</tr>
+</tbody>
+</table>
+<p>Delinger åttedoblet seg og utgjør 20 % av alt engasjement. Det er det viktigste signalet i uken: innholdet blir videresendt, ikke bare likt. Kommentarer er derimot nesten fraværende (6 stk.).</p>
+<p>Reelen <a href="https://www.instagram.com/reel/DdLdRmRI93r/">«Hvis det skulle være noen tvil om hvem som har fått mer eller mindre toll…»</a> vokste fra 6 971 til 15 406 visninger på to dager, og delingene gikk fra 56 til 156. Den vokser fortsatt – ikke konkluder på den ennå.</p>
+<h3>YouTube (31 400 abonnenter)</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Denne uken (5 dager m/data)</th>
+<th>Forrige uke</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Visninger</td>
+<td>15 805</td>
+<td>7 492</td>
+</tr>
+<tr>
+<td>Thumbnail-visninger</td>
+<td>91 958</td>
+<td>53 274</td>
+</tr>
+<tr>
+<td>Seertid</td>
+<td>59 455 min</td>
+<td>33 098 min</td>
+</tr>
+<tr>
+<td>Engasjementsrate</td>
+<td>1,36 %</td>
+<td>0,43 %</td>
+</tr>
+</tbody>
+</table>
+<p>Forholdet visninger/thumbnail-visninger gikk fra 14,1 % til 17,2 % – tittel og miniatyrbilde på de nye videoene fungerer bedre enn snittet på kanalen. Seertid per visning falt fra 4,4 til 3,8 min, som er normalt når mye av trafikken er fersk og nysgjerrig.</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=BAqkpcUSmb8">«Hvorfor er formueskatten så cringe? | Simen Velle»</a>: 6 663 → 11 110 visninger på to dager</li>
+<li><a href="https://www.youtube.com/watch?v=cHC-ELrA3lY">«Hvorfor hater Trump Norge? | Espen Barth Eide»</a>: 3 707 → 6 524</li>
+</ul>
+<p>Begge er publisert samme dag, samme minutt (10:01). De konkurrerer om de samme anbefalingene og den samme abonnentvarslingen.</p>
+<h3>TikTok (45 830 følgere)</h3>
+<p>Vi har kun 2 døgn med data (12.–13.09), fordi historikken starter ved første innhenting. <strong>Ikke les 2 505 visninger som en nedgang – det finnes ikke noe sammenligningsgrunnlag.</strong> Det vi kan si: all bevegelse kommer fra gamle videoer, først og fremst <a href="https://www.tiktok.com/@_loff__/video/7673928465971744022">formuesskatt-videoen</a> (+706 visninger), <a href="https://www.tiktok.com/@_loff__/video/7677601249658785046">toll-videoen</a> (+549) og <a href="https://www.tiktok.com/@_loff__/video/7675654644827278614">guttegjeng-videoen</a> (+227). Ingen nye publiseringer på tre uker.</p>
+<hr />
+<h2>Hva som fungerte — og hvorfor</h2>
+<p><strong>Nyhetsaktuelt forklarer-innhold drar delinger og rekkevidde utenfor følgerbasen.</strong> Toll/Trump/formuesskatt går igjen i toppen på alle tre plattformer: <a href="https://www.tiktok.com/@_loff__/video/7677601249658785046">TikTok-toll-videoen</a> (49 143 visninger, 425 delinger, ER 4,4 %), <a href="https://www.instagram.com/reel/DdLdRmRI93r/">IG-reelen om toll</a> (156 delinger) og begge YouTube-videoene. Best gjetning: folk deler dette som et argument i en pågående samtale – innholdet gjør en jobb for den som deler det. Det er også grunnen til at delinger, ikke likes, er hovedmotoren her.</p>
+<p><strong>Kjendis- og følelsesinnhold gir høy rate, men lav spredning.</strong> <a href="https://www.instagram.com/p/DcjAp8FIEJt/">«Verdens beste kongen vår»</a> har periodens høyeste engasjementsrate (10,0 %, 1 326 likes) – men bare 8 delinger og 18 lagringer. Det er et innlegg som treffer de som allerede følger dere, ikke et som henter nye. Begge deler er verdt å lage, men de løser ulike problemer.</p>
+<p><strong>Samarbeidsformatet «Mektig mat med makta» tåler flere kutt.</strong> Den samme Simen Velle-samtalen ga 54 446 visninger på TikTok i august og 11 110 på YouTube i september. Materialet gjenbrukes for lite.</p>
+<hr />
+<h2>Forslag til neste uke</h2>
+<ol>
+<li><strong>Publiser på TikTok igjen – minimum tre videoer.</strong> Start med toll-vinkelen fra IG-reelen (den fungerte allerede på TikTok i august) og to klipp fra Barth Eide-episoden. Dette er den enkleste kilden til vekst vi har i tallene.</li>
+<li><strong>Ikke slipp to YouTube-videoer samtidig.</strong> Del dem med 2–3 dager. Neste gang: én video tirsdag, én torsdag, og mål om førstedagsvisningene på video nr. 2 nærmer seg nr. 1.</li>
+<li><strong>Øk IG til 2–3 reels i uken.</strong> Én reel kan ikke bære en uke. Bruk samme oppskrift som toll-reelen: aktuell sak + «her er hva som faktisk skjedde» + tall som er lette å gjengi videre.</li>
+<li><strong>Gjør noe aktivt med kommentarer på Instagram.</strong> 6 kommentarer på 1 418 engasjement er svakt. Test å avslutte captionen med ett konkret spørsmål eller en påstand folk kan være uenige i, på minst to innlegg, og se om raten flytter seg.</li>
+<li><strong>Behold én «hjertevarm» post i uken</strong> (kongen-typen) for å holde følgerbasen aktiv – men ikke forvent rekkevidde av den, og ikke bruk den som ukens hovedsatsing.</li>
+<li><strong>Neste uke måler vi følgervekst for første gang.</strong> Sett opp forventningen nå: hvilke av innleggene over tror dere faktisk konverterer til følgere?</li>
+</ol>
+<hr />
+<h2>Datakvalitet — les dette før dere siterer tall</h2>
+<ul>
+<li><strong>Loggingen startet 11.–12. september.</strong> Instagram og YouTube er etterfylt via API, TikTok kan ikke etterfylles. Derfor: TikTok har 2 av 7 dager i uken og 2 av 28 dager i månedstallene.</li>
+<li><strong>Alle «28-dagers endring»-tall er ubrukelige.</strong> Forrige 28-dagersperiode har 2 dager data på Instagram, 4 på YouTube og 0 på TikTok. Ikke bruk de prosentene til noe.</li>
+<li><strong>YouTube mangler 12.–13.09</strong> (normal 2–3 dagers forsinkelse). Uketallet på 15 805 visninger dekker 5 dager og vil stige.</li>
+<li><strong>Følgerendring kan ikke beregnes ennå.</strong> Vi har snapshots fra 12.09 og utover: IG 26 042 → 26 035, TikTok 45 829 → 45 830, YouTube 31 400 uendret. Første ekte ukesvekst kommer i neste rapport.</li>
+<li><strong>To ting på Instagram bør sjekkes:</strong> (a) 11.09 viser 24 776 visninger mot bare 713 i rekkevidde, som ikke henger sammen. (b) Kontonivå viser ~70 000 visninger 11.–13.09, mens alle innleggene vi sporer til sammen bare vokser ~10 000 i samme periode. Sannsynligvis mangler det innlegg i innleggstabellen (samarbeids-/collab-innlegg?). Inntil dette er avklart: stol på trenden, ikke på de absolutte visningstallene på kontonivå.</li>
+<li><strong>Snapchat hentes ikke inn</strong> – mangler <code>SNAP_CLIENT_ID</code> og <code>SNAP_CLIENT_SECRET</code>.</li>
+</ul></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head"><h2>Status for siste innhenting</h2></div>
+    <div class="status" id="status"></div>
+    <details><summary>Slik er tallene definert</summary><div id="notes"></div></details>
+  </section>
+</main>
+
+<script>
+const DATA = {"account": "Loff", "generated": "2026-09-14", "platforms": {"instagram": {"handle": "_loff_", "url": "https://www.instagram.com/_loff_/", "note": "reach = unike kontoer nådd per dag (Meta-estimat; kan ikke summeres til ukentlig unike). views = visninger. engagements = total_interactions (likes+kommentarer+delinger+lagringer+reposts). followers = followers_count, snapshot tatt ved hver kjøring. Stories er ikke med (krever Facebook Login)."}, "youtube": {"handle": "@Loff", "url": "https://www.youtube.com/@Loff", "note": "reach finnes ikke hos YouTube; impressions = thumbnail-visninger fra Reporting API (nærmeste mål på rekkevidde). views = videovisninger. engagements = likes+kommentarer+delinger. followers = abonnenter (snapshot). Analytics-tall kommer med 2–3 dagers forsinkelse."}, "tiktok": {"handle": "_loff__", "url": "https://www.tiktok.com/@_loff__", "note": "TikTok Display API (vanlig konto, ikke business). Daglige views/likes/comments/shares er endringen i summen over alle offentlige videoer fra én daglig kjøring til neste (ca. kl. 07–07), ført på dagen før. Reach og profilvisninger finnes ikke. engagements = likes+kommentarer+delinger. followers = follower_count (snapshot). Historikk starter ved første kjøring."}}, "daily": [{"platform": "youtube", "date": "2026-08-13", "followers": null, "reach": null, "views": null, "impressions": 6088.0, "likes": null, "comments": null, "shares": null, "saves": null, "engagements": null}, {"platform": "youtube", "date": "2026-08-14", "followers": null, "reach": null, "views": null, "impressions": 9590.0, "likes": null, "comments": null, "shares": null, "saves": null, "engagements": null}, {"platform": "instagram", "date": "2026-08-15", "followers": null, "reach": 1000.0, "views": 2884.0, "impressions": null, "likes": 14.0, "comments": 0.0, "shares": 18.0, "saves": 0.0, "engagements": 50.0}, {"platform": "youtube", "date": "2026-08-15", "followers": null, "reach": null, "views": 689.0, "impressions": 8474.0, "likes": 3.0, "comments": 0.0, "shares": 2.0, "saves": null, "engagements": 5.0}, {"platform": "instagram", "date": "2026-08-16", "followers": null, "reach": 175.0, "views": 471.0, "impressions": null, "likes": 6.0, "comments": 0.0, "shares": 0.0, "saves": 1.0, "engagements": 7.0}, {"platform": "youtube", "date": "2026-08-16", "followers": null, "reach": null, "views": 802.0, "impressions": 9346.0, "likes": 3.0, "comments": 0.0, "shares": 1.0, "saves": null, "engagements": 4.0}, {"platform": "instagram", "date": "2026-08-17", "followers": null, "reach": 1487.0, "views": 2520.0, "impressions": null, "likes": 22.0, "comments": 0.0, "shares": 18.0, "saves": 0.0, "engagements": 61.0}, {"platform": "youtube", "date": "2026-08-17", "followers": null, "reach": null, "views": 718.0, "impressions": 8266.0, "likes": 4.0, "comments": 0.0, "shares": 4.0, "saves": null, "engagements": 8.0}, {"platform": "instagram", "date": "2026-08-18", "followers": null, "reach": 772.0, "views": 1415.0, "impressions": null, "likes": 15.0, "comments": 0.0, "shares": 34.0, "saves": 1.0, "engagements": 84.0}, {"platform": "youtube", "date": "2026-08-18", "followers": null, "reach": null, "views": 605.0, "impressions": 9216.0, "likes": 5.0, "comments": 1.0, "shares": 0.0, "saves": null, "engagements": 6.0}, {"platform": "instagram", "date": "2026-08-19", "followers": null, "reach": 241.0, "views": 600.0, "impressions": null, "likes": 6.0, "comments": 0.0, "shares": 2.0, "saves": 0.0, "engagements": 10.0}, {"platform": "youtube", "date": "2026-08-19", "followers": null, "reach": null, "views": 671.0, "impressions": 8900.0, "likes": 5.0, "comments": 0.0, "shares": 0.0, "saves": null, "engagements": 5.0}, {"platform": "instagram", "date": "2026-08-20", "followers": null, "reach": 213.0, "views": 613.0, "impressions": null, "likes": 2.0, "comments": 0.0, "shares": 1.0, "saves": -2.0, "engagements": 2.0}, {"platform": "youtube", "date": "2026-08-20", "followers": null, "reach": null, "views": 627.0, "impressions": 7463.0, "likes": 4.0, "comments": 0.0, "shares": 4.0, "saves": null, "engagements": 8.0}, {"platform": "instagram", "date": "2026-08-21", "followers": null, "reach": 817.0, "views": 2445.0, "impressions": null, "likes": 9.0, "comments": 0.0, "shares": 10.0, "saves": -1.0, "engagements": 28.0}, {"platform": "youtube", "date": "2026-08-21", "followers": null, "reach": null, "views": 814.0, "impressions": 8417.0, "likes": 5.0, "comments": 1.0, "shares": 2.0, "saves": null, "engagements": 8.0}, {"platform": "instagram", "date": "2026-08-22", "followers": null, "reach": 1193.0, "views": 2685.0, "impressions": null, "likes": 11.0, "comments": 0.0, "shares": 8.0, "saves": 0.0, "engagements": 28.0}, {"platform": "youtube", "date": "2026-08-22", "followers": null, "reach": null, "views": 724.0, "impressions": 7905.0, "likes": 7.0, "comments": 0.0, "shares": 0.0, "saves": null, "engagements": 7.0}, {"platform": "instagram", "date": "2026-08-23", "followers": null, "reach": 321.0, "views": 640.0, "impressions": null, "likes": 13.0, "comments": 0.0, "shares": 2.0, "saves": -1.0, "engagements": 16.0}, {"platform": "youtube", "date": "2026-08-23", "followers": null, "reach": null, "views": 611.0, "impressions": 7206.0, "likes": 0.0, "comments": 0.0, "shares": 0.0, "saves": null, "engagements": 0.0}, {"platform": "instagram", "date": "2026-08-24", "followers": null, "reach": 214.0, "views": 538.0, "impressions": null, "likes": 3.0, "comments": 0.0, "shares": 0.0, "saves": 0.0, "engagements": 3.0}, {"platform": "youtube", "date": "2026-08-24", "followers": null, "reach": null, "views": 689.0, "impressions": 8559.0, "likes": 6.0, "comments": 0.0, "shares": 3.0, "saves": null, "engagements": 9.0}, {"platform": "instagram", "date": "2026-08-25", "followers": null, "reach": 1659.0, "views": 3345.0, "impressions": null, "likes": 20.0, "comments": 0.0, "shares": 35.0, "saves": 0.0, "engagements": 92.0}, {"platform": "youtube", "date": "2026-08-25", "followers": null, "reach": null, "views": 693.0, "impressions": 8659.0, "likes": 5.0, "comments": 0.0, "shares": 3.0, "saves": null, "engagements": 8.0}, {"platform": "instagram", "date": "2026-08-26", "followers": null, "reach": 615.0, "views": 1108.0, "impressions": null, "likes": 8.0, "comments": 0.0, "shares": 2.0, "saves": 1.0, "engagements": 13.0}, {"platform": "youtube", "date": "2026-08-26", "followers": null, "reach": null, "views": 711.0, "impressions": 9185.0, "likes": -1.0, "comments": 0.0, "shares": 3.0, "saves": null, "engagements": 2.0}, {"platform": "instagram", "date": "2026-08-27", "followers": null, "reach": 10582.0, "views": 18151.0, "impressions": null, "likes": 924.0, "comments": 6.0, "shares": 8.0, "saves": 12.0, "engagements": 961.0}, {"platform": "youtube", "date": "2026-08-27", "followers": null, "reach": null, "views": 1019.0, "impressions": 7890.0, "likes": 2.0, "comments": 1.0, "shares": 2.0, "saves": null, "engagements": 5.0}, {"platform": "instagram", "date": "2026-08-28", "followers": null, "reach": 2219.0, "views": 3714.0, "impressions": null, "likes": 182.0, "comments": 1.0, "shares": 0.0, "saves": 8.0, "engagements": 193.0}, {"platform": "youtube", "date": "2026-08-28", "followers": null, "reach": null, "views": 932.0, "impressions": 7490.0, "likes": 3.0, "comments": 0.0, "shares": 1.0, "saves": null, "engagements": 4.0}, {"platform": "instagram", "date": "2026-08-29", "followers": null, "reach": 390.0, "views": 807.0, "impressions": null, "likes": 28.0, "comments": 0.0, "shares": 3.0, "saves": 0.0, "engagements": 34.0}, {"platform": "youtube", "date": "2026-08-29", "followers": null, "reach": null, "views": 1014.0, "impressions": 7200.0, "likes": 1.0, "comments": 0.0, "shares": 0.0, "saves": null, "engagements": 1.0}, {"platform": "instagram", "date": "2026-08-30", "followers": null, "reach": 320.0, "views": 532.0, "impressions": null, "likes": 21.0, "comments": 0.0, "shares": 1.0, "saves": 0.0, "engagements": 23.0}, {"platform": "youtube", "date": "2026-08-30", "followers": null, "reach": null, "views": 1133.0, "impressions": 8280.0, "likes": 1.0, "comments": 0.0, "shares": 1.0, "saves": null, "engagements": 2.0}, {"platform": "instagram", "date": "2026-08-31", "followers": null, "reach": 264.0, "views": 425.0, "impressions": null, "likes": 15.0, "comments": 0.0, "shares": 1.0, "saves": 0.0, "engagements": 17.0}, {"platform": "youtube", "date": "2026-08-31", "followers": null, "reach": null, "views": 1015.0, "impressions": 7146.0, "likes": 3.0, "comments": 0.0, "shares": 0.0, "saves": null, "engagements": 3.0}, {"platform": "instagram", "date": "2026-09-01", "followers": null, "reach": 226.0, "views": 423.0, "impressions": null, "likes": 17.0, "comments": 0.0, "shares": 3.0, "saves": 1.0, "engagements": 24.0}, {"platform": "youtube", "date": "2026-09-01", "followers": null, "reach": null, "views": 1115.0, "impressions": 7253.0, "likes": 5.0, "comments": 0.0, "shares": 0.0, "saves": null, "engagements": 5.0}, {"platform": "instagram", "date": "2026-09-02", "followers": null, "reach": 201.0, "views": 528.0, "impressions": null, "likes": 40.0, "comments": 0.0, "shares": 18.0, "saves": 1.0, "engagements": 77.0}, {"platform": "youtube", "date": "2026-09-02", "followers": null, "reach": null, "views": 1023.0, "impressions": 7188.0, "likes": 2.0, "comments": 0.0, "shares": 0.0, "saves": null, "engagements": 2.0}, {"platform": "instagram", "date": "2026-09-03", "followers": null, "reach": 825.0, "views": 2135.0, "impressions": null, "likes": 18.0, "comments": 1.0, "shares": 5.0, "saves": -1.0, "engagements": 28.0}, {"platform": "youtube", "date": "2026-09-03", "followers": null, "reach": null, "views": 1043.0, "impressions": 7687.0, "likes": 6.0, "comments": 0.0, "shares": 3.0, "saves": null, "engagements": 9.0}, {"platform": "instagram", "date": "2026-09-04", "followers": null, "reach": 1666.0, "views": 8384.0, "impressions": null, "likes": 33.0, "comments": 0.0, "shares": 8.0, "saves": 2.0, "engagements": 52.0}, {"platform": "youtube", "date": "2026-09-04", "followers": null, "reach": null, "views": 1129.0, "impressions": 8057.0, "likes": 2.0, "comments": 0.0, "shares": 1.0, "saves": null, "engagements": 3.0}, {"platform": "instagram", "date": "2026-09-05", "followers": null, "reach": 607.0, "views": 2200.0, "impressions": null, "likes": 13.0, "comments": 0.0, "shares": 0.0, "saves": 0.0, "engagements": 13.0}, {"platform": "youtube", "date": "2026-09-05", "followers": null, "reach": null, "views": 1027.0, "impressions": 7928.0, "likes": 6.0, "comments": 0.0, "shares": 1.0, "saves": null, "engagements": 7.0}, {"platform": "instagram", "date": "2026-09-06", "followers": null, "reach": 223.0, "views": 422.0, "impressions": null, "likes": 17.0, "comments": 0.0, "shares": 0.0, "saves": 0.0, "engagements": 17.0}, {"platform": "youtube", "date": "2026-09-06", "followers": null, "reach": null, "views": 1140.0, "impressions": 8015.0, "likes": 2.0, "comments": 0.0, "shares": 1.0, "saves": null, "engagements": 3.0}, {"platform": "instagram", "date": "2026-09-07", "followers": null, "reach": 296.0, "views": 443.0, "impressions": null, "likes": 14.0, "comments": 0.0, "shares": 1.0, "saves": 0.0, "engagements": 16.0}, {"platform": "youtube", "date": "2026-09-07", "followers": null, "reach": null, "views": 870.0, "impressions": 6665.0, "likes": 2.0, "comments": 0.0, "shares": 0.0, "saves": null, "engagements": 2.0}, {"platform": "instagram", "date": "2026-09-08", "followers": null, "reach": 2347.0, "views": 2425.0, "impressions": null, "likes": 17.0, "comments": 0.0, "shares": 1.0, "saves": -1.0, "engagements": 18.0}, {"platform": "youtube", "date": "2026-09-08", "followers": null, "reach": null, "views": 877.0, "impressions": 6551.0, "likes": 3.0, "comments": 0.0, "shares": 1.0, "saves": null, "engagements": 4.0}, {"platform": "instagram", "date": "2026-09-09", "followers": null, "reach": 471.0, "views": 703.0, "impressions": null, "likes": 33.0, "comments": 0.0, "shares": 0.0, "saves": 1.0, "engagements": 34.0}, {"platform": "youtube", "date": "2026-09-09", "followers": null, "reach": null, "views": 834.0, "impressions": 5923.0, "likes": 2.0, "comments": 0.0, "shares": 2.0, "saves": null, "engagements": 4.0}, {"platform": "instagram", "date": "2026-09-10", "followers": null, "reach": 224.0, "views": 303.0, "impressions": null, "likes": 27.0, "comments": 0.0, "shares": 0.0, "saves": 0.0, "engagements": 27.0}, {"platform": "youtube", "date": "2026-09-10", "followers": null, "reach": null, "views": 895.0, "impressions": 6682.0, "likes": 8.0, "comments": 0.0, "shares": 3.0, "saves": null, "engagements": 11.0}, {"platform": "instagram", "date": "2026-09-11", "followers": null, "reach": 713.0, "views": 24776.0, "impressions": null, "likes": 260.0, "comments": 2.0, "shares": 59.0, "saves": 27.0, "engagements": 407.0}, {"platform": "youtube", "date": "2026-09-11", "followers": null, "reach": null, "views": 12329.0, "impressions": 66137.0, "likes": 156.0, "comments": 11.0, "shares": 27.0, "saves": null, "engagements": 194.0}, {"platform": "instagram", "date": "2026-09-12", "followers": 26042.0, "reach": 9765.0, "views": 38299.0, "impressions": null, "likes": 351.0, "comments": 3.0, "shares": 190.0, "saves": 32.0, "engagements": 771.0}, {"platform": "youtube", "date": "2026-09-12", "followers": 31400.0, "reach": null, "views": null, "impressions": 38755.0, "likes": null, "comments": null, "shares": null, "saves": null, "engagements": null}, {"platform": "tiktok", "date": "2026-09-12", "followers": 45829.0, "reach": null, "views": 989.0, "impressions": null, "likes": 38.0, "comments": 1.0, "shares": 2.0, "saves": null, "engagements": 41.0}, {"platform": "instagram", "date": "2026-09-13", "followers": 26041.0, "reach": 2187.0, "views": 7260.0, "impressions": null, "likes": 82.0, "comments": 1.0, "shares": 32.0, "saves": 3.0, "engagements": 151.0}, {"platform": "youtube", "date": "2026-09-13", "followers": 31400.0, "reach": null, "views": null, "impressions": null, "likes": null, "comments": null, "shares": null, "saves": null, "engagements": null}, {"platform": "tiktok", "date": "2026-09-13", "followers": 45831.0, "reach": null, "views": 1602.0, "impressions": null, "likes": 64.0, "comments": 0.0, "shares": 14.0, "saves": null, "engagements": 78.0}, {"platform": "instagram", "date": "2026-09-14", "followers": 26035.0, "reach": null, "views": null, "impressions": null, "likes": null, "comments": null, "shares": null, "saves": null, "engagements": null}, {"platform": "youtube", "date": "2026-09-14", "followers": 31400.0, "reach": null, "views": null, "impressions": null, "likes": null, "comments": null, "shares": null, "saves": null, "engagements": null}, {"platform": "tiktok", "date": "2026-09-14", "followers": 45830.0, "reach": null, "views": null, "impressions": null, "likes": null, "comments": null, "shares": null, "saves": null, "engagements": null}], "posts_timeline": [{"platform": "youtube", "date": "2026-03-20", "caption": "Emils snakkemåte diskuteres på Jodel og Skinny E med ny låt", "url": "https://www.youtube.com/watch?v=Rr-VkpzUzf4"}, {"platform": "youtube", "date": "2026-03-20", "caption": "Nammenam med Herman Flesvig og Mikkel Niva", "url": "https://www.youtube.com/watch?v=XNu6dexNqec"}, {"platform": "tiktok", "date": "2026-03-23", "caption": "Ny episode Nammenam kommer snart🌽🍑 Den er allerede ute for medlemmer🫶🏼 @NikkelMiva @Herman", "url": "https://www.tiktok.com/@_loff__/video/7620471253773618454?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "instagram", "date": "2026-03-23", "caption": "Ny episode Nammenam kommer snart🌽🍑 Den er allerede ute for medlemmer🫶🏼", "url": "https://www.instagram.com/reel/DWO04dpiHar/"}, {"platform": "tiktok", "date": "2026-03-24", "caption": "Ting går ikke alltid akkurat som det skal @Herman Flesvig ", "url": "https://www.tiktok.com/@_loff__/video/7620740442111347990?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "tiktok", "date": "2026-03-25", "caption": "Er de inne på noe? #sladder @Emil Wæraas @Christoffer Wæraas @Mikkel Graham @safarishaban ", "url": "https://www.tiktok.com/@_loff__/video/7621205579910057238?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "instagram", "date": "2026-03-26", "caption": "Ting går ikke alltid helt som det skal.", "url": "https://www.instagram.com/reel/DWVils7iOS0/"}, {"platform": "youtube", "date": "2026-03-27", "caption": "Dette tjener de faktisk | Nammenam med Herman Flesvig og Mikkel Niva", "url": "https://www.youtube.com/watch?v=xrWrsnL0GcQ"}, {"platform": "instagram", "date": "2026-03-27", "caption": "Ny episode Nammenam i dag🥳 Håper den faller i smak🫶🏼", "url": "https://www.instagram.com/p/DWYz1-LiNTJ/"}, {"platform": "instagram", "date": "2026-04-07", "caption": "Det er alltid generelt veldig hyggelig å ta selfie🍛 #nammenam", "url": "https://www.instagram.com/reel/DW1epjAiGE5/"}, {"platform": "youtube", "date": "2026-04-07", "caption": "Dette gjør aldri Herman Flesvig", "url": "https://www.youtube.com/watch?v=Rj3nxUjbk8w"}, {"platform": "youtube", "date": "2026-04-07", "caption": "Her går Herman Flesvig skikkelig på trynet", "url": "https://www.youtube.com/watch?v=_88UtgFkFOo"}, {"platform": "youtube", "date": "2026-04-07", "caption": "Her går ikke alt som det skal med Herman Flesvig", "url": "https://www.youtube.com/watch?v=4_CEkZD0D-w"}, {"platform": "tiktok", "date": "2026-04-08", "caption": "Tar du kollektiv? Og hvis ja, tar du selfie når du er der? #nammenam @Herman Flesvig @Nikk", "url": "https://www.tiktok.com/@_loff__/video/7626416746391407895?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "tiktok", "date": "2026-04-09", "caption": "Hvor mye tjener Mikkel Niva og Herman Flesvig? Takket være seerspørsmål fra Wenche kan du ", "url": "https://www.tiktok.com/@_loff__/video/7626686109883452694?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "instagram", "date": "2026-04-09", "caption": "Hvor mye tjener Mikkel Niva og Herman Flesvig? Takket være seerspørsmål fra Wenche kan du ", "url": "https://www.instagram.com/reel/DW59VtYiAAR/"}, {"platform": "youtube", "date": "2026-04-09", "caption": "Så mye tjener Herman Flesvig og Mikkel Niva", "url": "https://www.youtube.com/watch?v=j40YBqtuDI0"}, {"platform": "tiktok", "date": "2026-04-10", "caption": "Man kan ikke forvente det heller vet du 🥹 #nammenam @Herman Flesvig @NikkelMiva ", "url": "https://www.tiktok.com/@_loff__/video/7627151752042761494?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "instagram", "date": "2026-04-10", "caption": "Man kan ikke forvente det heller, vet du 🥹 #nammenam", "url": "https://www.instagram.com/reel/DW9MNFajKEL/"}, {"platform": "tiktok", "date": "2026-04-11", "caption": "Aldri før viste bloopers fra Nissene i skjul🍛 @Herman Flesvig @NikkelMiva #nammenam ", "url": "https://www.tiktok.com/@_loff__/video/7627382091302309142?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "instagram", "date": "2026-04-11", "caption": "Aldri før viste bloopers fra Nissene i skjul🍛 #nammenam", "url": "https://www.instagram.com/reel/DW-yd11DOKt/"}, {"platform": "youtube", "date": "2026-04-24", "caption": "Bård avslører oppsiktsvekkende detaljer om broren | Nammenam med Bård Ylvisåker og Gaute B", "url": "https://www.youtube.com/watch?v=U1pwKgfmOWM"}, {"platform": "youtube", "date": "2026-04-24", "caption": "Ny Nammenam-episode ute i dag, vjørsen den goden!", "url": "https://www.youtube.com/watch?v=S9XWJEpaDp0"}, {"platform": "instagram", "date": "2026-04-24", "caption": "Ny Nammenam-episode ute i dag, vjørsen den goden #nammenam", "url": "https://www.instagram.com/reel/DXgmOHoiAAZ/"}, {"platform": "tiktok", "date": "2026-04-24", "caption": "Ny Nammenam-episode ute nå, vjørsen den goden #nammenam", "url": "https://www.tiktok.com/@_loff__/video/7632256529906846998?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "instagram", "date": "2026-05-06", "caption": "Hvor gammel er man egentlig? Nammenam ute der du ser på Nammenam🎈", "url": "https://www.instagram.com/reel/DYAlzgQI35-/"}, {"platform": "tiktok", "date": "2026-05-06", "caption": "Hvor gammel er man egentlig? Nammenam ute der du ser på Nammenam🎈 @bardylvis @guccigaute ", "url": "https://www.tiktok.com/@_loff__/video/7636867094998486294?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "youtube", "date": "2026-05-18", "caption": "Erlend Mørch blir satt ut av Safari sitt liv | Ep.1 Er jeg norsk nå?", "url": "https://www.youtube.com/watch?v=kgclGKk83yk"}, {"platform": "youtube", "date": "2026-05-18", "caption": "Jon Almaas: «Sånn gjør vi ikke i Norge» | Ep.2 Er jeg norsk nå?", "url": "https://www.youtube.com/watch?v=74Ob3PEjT8Q"}, {"platform": "youtube", "date": "2026-05-20", "caption": "Safari må gjøre dette for å overtale Martha Leivestad | Ep.3 Er jeg norsk nå?", "url": "https://www.youtube.com/watch?v=LXkj2OCBIrs"}, {"platform": "instagram", "date": "2026-05-22", "caption": "Håper gaven falt i smak, @guccigaute 🫶🏼 La dette også være en påminner til alle at det er ", "url": "https://www.instagram.com/reel/DYopiV6oMCE/"}, {"platform": "tiktok", "date": "2026-05-22", "caption": "Håper gaven falt i smak @Gucci 🔪 Si fra om du ombestemmer deg på baksten @bardylvis 🧁#namm", "url": "https://www.tiktok.com/@_loff__/video/7642641463309913366?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "youtube", "date": "2026-05-22", "caption": "Jeg sier du er norsk, er ikke det nok? | Ep.4 Er jeg norsk nå?", "url": "https://www.youtube.com/watch?v=jSn-UYPPsUE"}, {"platform": "youtube", "date": "2026-05-24", "caption": "Dette tipset fra Galvan er gull verdt | Ep.5 Er jeg norsk nå?", "url": "https://www.youtube.com/watch?v=6GwrVMBwmzo"}, {"platform": "tiktok", "date": "2026-06-04", "caption": "Se utrolige avsløringer om Bård og broren i full episode på YouTube 🎈#nammenam @bardylvis ", "url": "https://www.tiktok.com/@_loff__/video/7647433311937285379?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "instagram", "date": "2026-06-04", "caption": "Se utrolige avsløringer om Bård og broren i full episode på YouTube 🎈#nammenam", "url": "https://www.instagram.com/reel/DZJ7TmwItyX/"}, {"platform": "instagram", "date": "2026-06-08", "caption": "Mange beskriver golf som frustrerende🏌️Men har de prøvd hestepolo? Det kan mildt sagt tapp", "url": "https://www.instagram.com/reel/DZVDzmrIiCW/"}, {"platform": "youtube", "date": "2026-06-09", "caption": "Jon Almaas overrasker mammaen til Safari  | Ep.6 Er jeg norsk nå?", "url": "https://www.youtube.com/watch?v=A5zaH2b-PiY"}, {"platform": "youtube", "date": "2026-06-09", "caption": "Detter skjønner ikke Guccigaute noe av", "url": "https://www.youtube.com/watch?v=THClu1ada9o"}, {"platform": "tiktok", "date": "2026-06-10", "caption": "Frustrerende er det mange som sier om golf ⛳️ ", "url": "https://www.tiktok.com/@_loff__/video/7649825050647923990?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "instagram", "date": "2026-06-10", "caption": "Hva heter det når det er det motsatte av frustrerende?", "url": "https://www.instagram.com/reel/DZahR17Ki0o/"}, {"platform": "tiktok", "date": "2026-08-14", "caption": "Hvorfor er formuesskatten så cringe?💸 @Simen Velle Samarbeid med NHO🥂", "url": "https://www.tiktok.com/@_loff__/video/7673928465971744022?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "tiktok", "date": "2026-08-19", "caption": "Greit å ha selvinnsikt nok til å vite hvem man er i guttegjengen. Espen har i hvert fall f", "url": "https://www.tiktok.com/@_loff__/video/7675654644827278614?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "tiktok", "date": "2026-08-24", "caption": "Rydde litt i all forvirring rundt tollsatsene til appelsinen i det hvite hus🍊💇 Mye løses m", "url": "https://www.tiktok.com/@_loff__/video/7677601249658785046?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r"}, {"platform": "instagram", "date": "2026-08-27", "caption": "Verdens beste kongen vår ❤️", "url": "https://www.instagram.com/p/DcjAp8FIEJt/"}, {"platform": "youtube", "date": "2026-09-11", "caption": "Hvorfor er formueskatten så cringe? | Simen Velle | Mektig mat med makta", "url": "https://www.youtube.com/watch?v=BAqkpcUSmb8"}, {"platform": "youtube", "date": "2026-09-11", "caption": "Hvorfor hater Trump Norge? | Espen Barth Eide | Mektig mat med makta", "url": "https://www.youtube.com/watch?v=cHC-ELrA3lY"}, {"platform": "instagram", "date": "2026-09-12", "caption": "Hvis det skulle være noen tvil om hvem som har fått mer eller mindre toll fra den oransje ", "url": "https://www.instagram.com/reel/DdLdRmRI93r/"}], "week": {"period": ["2026-09-07", "2026-09-13"], "previous_period": ["2026-08-31", "2026-09-06"], "platforms": {"instagram": {"followers": 26035.0, "followers_change": null, "followers_change_since": null, "current": {"days_with_data": 7, "views": 74209.0, "reach": 16003.0, "impressions": null, "likes": 784.0, "comments": 6.0, "shares": 283.0, "saves": 62.0, "engagements": 1424.0, "profile_views": null, "watch_time_minutes": null, "engagement_rate": 0.089}, "previous": {"days_with_data": 7, "views": 14517.0, "reach": 4012.0, "impressions": null, "likes": 153.0, "comments": 1.0, "shares": 35.0, "saves": 3.0, "engagements": 228.0, "profile_views": null, "watch_time_minutes": null, "engagement_rate": 0.0568}, "latest_day_with_views": "2026-09-13"}, "youtube": {"followers": 31400.0, "followers_change": null, "followers_change_since": null, "current": {"days_with_data": 7, "views": 15805.0, "reach": null, "impressions": 130713.0, "likes": 171.0, "comments": 11.0, "shares": 33.0, "saves": null, "engagements": 215.0, "profile_views": null, "watch_time_minutes": 59455.0, "engagement_rate": 0.0136}, "previous": {"days_with_data": 7, "views": 7492.0, "reach": null, "impressions": 53274.0, "likes": 26.0, "comments": 0.0, "shares": 6.0, "saves": null, "engagements": 32.0, "profile_views": null, "watch_time_minutes": 33098.0, "engagement_rate": 0.0043}, "latest_day_with_views": "2026-09-11"}, "tiktok": {"followers": 45830.0, "followers_change": null, "followers_change_since": null, "current": {"days_with_data": 2, "views": 2591.0, "reach": null, "impressions": null, "likes": 102.0, "comments": 1.0, "shares": 16.0, "saves": null, "engagements": 119.0, "profile_views": null, "watch_time_minutes": null, "engagement_rate": 0.0459}, "previous": {"days_with_data": 0, "views": null, "reach": null, "impressions": null, "likes": null, "comments": null, "shares": null, "saves": null, "engagements": null, "profile_views": null, "watch_time_minutes": null, "engagement_rate": null}, "latest_day_with_views": "2026-09-13"}}}, "month": {"period": ["2026-08-17", "2026-09-13"], "previous_period": ["2026-07-20", "2026-08-16"], "platforms": {"instagram": {"followers": 26035.0, "followers_change": null, "followers_change_since": null, "current": {"days_with_data": 28, "views": 127839.0, "reach": 41058.0, "impressions": null, "likes": 2201.0, "comments": 14.0, "shares": 442.0, "saves": 83.0, "engagements": 3200.0, "profile_views": null, "watch_time_minutes": null, "engagement_rate": 0.0779}, "previous": {"days_with_data": 2, "views": 3355.0, "reach": 1175.0, "impressions": null, "likes": 20.0, "comments": 0.0, "shares": 18.0, "saves": 1.0, "engagements": 57.0, "profile_views": null, "watch_time_minutes": null, "engagement_rate": 0.0485}, "latest_day_with_views": "2026-09-13"}, "youtube": {"followers": 31400.0, "followers_change": null, "followers_change_since": null, "current": {"days_with_data": 28, "views": 34258.0, "reach": null, "impressions": 298623.0, "likes": 244.0, "comments": 14.0, "shares": 62.0, "saves": null, "engagements": 320.0, "profile_views": null, "watch_time_minutes": 156362.0, "engagement_rate": 0.0093}, "previous": {"days_with_data": 4, "views": 1491.0, "reach": null, "impressions": 33498.0, "likes": 6.0, "comments": 0.0, "shares": 3.0, "saves": null, "engagements": 9.0, "profile_views": null, "watch_time_minutes": 11675.0, "engagement_rate": 0.006}, "latest_day_with_views": "2026-09-11"}, "tiktok": {"followers": 45830.0, "followers_change": null, "followers_change_since": null, "current": {"days_with_data": 2, "views": 2591.0, "reach": null, "impressions": null, "likes": 102.0, "comments": 1.0, "shares": 16.0, "saves": null, "engagements": 119.0, "profile_views": null, "watch_time_minutes": null, "engagement_rate": 0.0459}, "previous": {"days_with_data": 0, "views": null, "reach": null, "impressions": null, "likes": null, "comments": null, "shares": null, "saves": null, "engagements": null, "profile_views": null, "watch_time_minutes": null, "engagement_rate": null}, "latest_day_with_views": "2026-09-13"}}}, "top_posts": [{"platform": "tiktok", "post_id": "7677601249658785046", "published": "2026-08-24", "post_type": "video", "caption": "Rydde litt i all forvirring rundt tollsatsene til appelsinen i det hvite hus🍊💇 Mye løses med å kunne regne opp i mente 🤝", "url": "https://www.tiktok.com/@_loff__/video/7677601249658785046?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 49176.0, "reach": null, "likes": 1702.0, "comments": 26.0, "shares": 425.0, "saves": null, "engagements": 2153.0, "engagement_rate": 0.0438}, {"platform": "instagram", "post_id": "18095689439066201", "published": "2026-08-27", "post_type": "FEED/IMAGE", "caption": "Verdens beste kongen vår ❤️", "url": "https://www.instagram.com/p/DcjAp8FIEJt/", "views": 22568.0, "reach": 13626.0, "likes": 1326.0, "comments": 10.0, "shares": 8.0, "saves": 18.0, "engagements": 1367.0, "engagement_rate": 0.1003}, {"platform": "tiktok", "post_id": "7675654644827278614", "published": "2026-08-19", "post_type": "video", "caption": "Greit å ha selvinnsikt nok til å vite hvem man er i guttegjengen. Espen har i hvert fall full oversikt 🤝 Samarbeid med N", "url": "https://www.tiktok.com/@_loff__/video/7675654644827278614?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 23228.0, "reach": null, "likes": 1067.0, "comments": 8.0, "shares": 199.0, "saves": null, "engagements": 1274.0, "engagement_rate": 0.0548}, {"platform": "instagram", "post_id": "18097758983561149", "published": "2026-09-12", "post_type": "REELS/VIDEO", "caption": "Hvis det skulle være noen tvil om hvem som har fått mer eller mindre toll fra den oransje bassen over dammen, så har Fre", "url": "https://www.instagram.com/reel/DdLdRmRI93r/", "views": 15509.0, "reach": 10784.0, "likes": 227.0, "comments": 2.0, "shares": 156.0, "saves": 17.0, "engagements": 406.0, "engagement_rate": 0.0376}, {"platform": "youtube", "post_id": "BAqkpcUSmb8", "published": "2026-09-11", "post_type": "video", "caption": "Hvorfor er formueskatten så cringe? | Simen Velle | Mektig mat med makta", "url": "https://www.youtube.com/watch?v=BAqkpcUSmb8", "views": 11187.0, "reach": null, "likes": 163.0, "comments": 6.0, "shares": 12.0, "saves": null, "engagements": 181.0, "engagement_rate": 0.0162}, {"platform": "youtube", "post_id": "cHC-ELrA3lY", "published": "2026-09-11", "post_type": "video", "caption": "Hvorfor hater Trump Norge? | Espen Barth Eide | Mektig mat med makta", "url": "https://www.youtube.com/watch?v=cHC-ELrA3lY", "views": 6546.0, "reach": null, "likes": 118.0, "comments": 12.0, "shares": 12.0, "saves": null, "engagements": 142.0, "engagement_rate": 0.0217}], "status": [{"platform": "instagram", "status": "ok", "message": "", "started_at": "2026-09-14T07:06:12+00:00"}, {"platform": "tiktok", "status": "ok", "message": "", "started_at": "2026-09-14T07:06:32+00:00"}, {"platform": "youtube", "status": "ok", "message": "", "started_at": "2026-09-14T07:06:23+00:00"}]};
+const NAMES = { instagram: "Instagram", youtube: "YouTube", tiktok: "TikTok" };
+const ORDER = ["instagram", "youtube", "tiktok"].filter(p => p in DATA.platforms);
+const METRICS = {
+  views: ["Visninger", "Visninger per dag. YouTube: videovisninger. TikTok: økning i totale videovisninger siden forrige dag."],
+  reach: ["Rekkevidde", "Unike kontoer nådd per dag. Bare Instagram har dette; YouTube og TikTok måler ikke daglig rekkevidde på kontonivå."],
+  impressions: ["Impressions", "Thumbnail-visninger på YouTube – nærmeste mål på rekkevidde der."],
+  engagements: ["Engasjement", "Instagram: total_interactions. YouTube/TikTok: likes + kommentarer + delinger."],
+  followers: ["Følgere", "Følgere/abonnenter. Plattformene har svært ulikt nivå – se kortene over for endring."],
+  likes: ["Likes", ""],
+  comments: ["Kommentarer", ""],
+  shares: ["Delinger", ""],
+};
+const RANGES = [["28", "28 d"], ["90", "90 d"], ["180", "180 d"]];
+const nf = new Intl.NumberFormat("nb-NO");
+const cf = new Intl.NumberFormat("nb-NO", { notation: "compact", maximumFractionDigits: 1 });
+const pf = new Intl.NumberFormat("nb-NO", { style: "percent", maximumFractionDigits: 1 });
+const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const num = v => (v === null || v === undefined) ? "–" : nf.format(Math.round(v));
+
+let state = { metric: "views", range: "90" };
+try { Object.assign(state, JSON.parse(localStorage.getItem("loff-dash") || "{}")); } catch (e) {}
+const save = () => { try { localStorage.setItem("loff-dash", JSON.stringify(state)); } catch (e) {} };
+
+document.getElementById("logo").alt = DATA.account;
+document.getElementById("subtitle").textContent =
+  `Oppdatert ${DATA.generated} · kortene viser ${DATA.week.period[0]} – ${DATA.week.period[1]} mot uka før`;
+
+function delta(cur, prev) {
+  if (!cur || !prev) return "";
+  const d = (cur - prev) / prev;
+  const cls = d >= 0 ? "up" : "down";
+  return `<span class="delta ${cls}">${d >= 0 ? "▲" : "▼"} ${pf.format(Math.abs(d))}</span>`;
+}
+
+function renderCards() {
+  document.getElementById("cards").innerHTML = ORDER.map(p => {
+    const info = DATA.platforms[p];
+    const s = DATA.week.platforms[p];
+    const head = `<div class="card-head"><span class="dot" style="background:var(--${p})"></span>
+      <strong>${NAMES[p]}</strong><a href="${esc(info.url)}" target="_blank" rel="noopener">${esc(info.handle)} ↗</a></div>`;
+    if (!s) return `<div class="card empty">${head}<p>Ikke koblet til ennå.</p></div>`;
+    const c = s.current, pr = s.previous;
+    const fc = s.followers_change;
+    const reachRow = p === "youtube"
+      ? `<dt>Impressions</dt><dd>${num(c.impressions)}${delta(c.impressions, pr.impressions)}</dd>`
+      : c.reach !== null ? `<dt>Sum daglig rekkevidde</dt><dd>${num(c.reach)}${delta(c.reach, pr.reach)}</dd>` : "";
+    return `<div class="card">${head}
+      <div class="hero">${s.followers !== null ? cf.format(s.followers) : "–"}</div>
+      <div class="hero-sub">${fc !== null ? `${fc >= 0 ? "+" : ""}${nf.format(fc)} følgere siste 7 dager` : "følgere"}</div>
+      <dl class="kpis">
+        <dt>Visninger</dt><dd>${num(c.views)}${delta(c.views, pr.views)}</dd>
+        ${reachRow}
+        <dt>Engasjement</dt><dd>${num(c.engagements)}${delta(c.engagements, pr.engagements)}</dd>
+        <dt>Engasjementsrate</dt><dd>${c.engagement_rate !== null ? pf.format(c.engagement_rate) : "–"}</dd>
+      </dl></div>`;
+  }).join("");
+}
+
+function segmented(id, options, key) {
+  const el = document.getElementById(id);
+  el.innerHTML = options.map(([v, label]) =>
+    `<button type="button" data-v="${v}" aria-pressed="${state[key] === v}">${label}</button>`).join("");
+  el.onclick = e => {
+    const b = e.target.closest("button"); if (!b) return;
+    state[key] = b.dataset.v; save();
+    el.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+    renderChart();
+  };
+}
+
+// Publiseringer slått opp på plattform + dato, brukt til punkter, tooltip og klikk i grafen.
+const POSTS = {};
+(DATA.posts_timeline || []).forEach(p => {
+  (POSTS[p.platform + p.date] = POSTS[p.platform + p.date] || []).push(p);
+});
+
+// Skriver plattformnavnet ved siste punkt, slik at fargen ikke er eneste kjennetegn.
+const endLabels = {
+  id: "endLabels",
+  afterDatasetsDraw(c) {
+    const ctx = c.ctx;
+    ctx.save();
+    ctx.font = '700 11px "Fira Sans", system-ui, sans-serif';
+    ctx.textBaseline = "middle";
+    c.data.datasets.forEach((ds, i) => {
+      const meta = c.getDatasetMeta(i);
+      if (meta.hidden) return;
+      const pts = meta.data.filter((p, idx) => ds.data[idx] !== null && ds.data[idx] !== undefined);
+      const last = pts[pts.length - 1];
+      if (!last) return;
+      ctx.fillStyle = ds.borderColor;
+      ctx.fillText(ds.label, last.x + 8, last.y);
+    });
+    ctx.restore();
+  },
+};
+
+let chart;
+function renderChart() {
+  const cutoff = new Date(DATA.generated); cutoff.setDate(cutoff.getDate() - Number(state.range));
+  const cut = cutoff.toISOString().slice(0, 10);
+  const rows = DATA.daily.filter(r => r.date >= cut && r.date < DATA.generated);
+  const labels = [...new Set(rows.map(r => r.date))].sort();
+  const datasets = ORDER.map(p => {
+    const byDate = Object.fromEntries(rows.filter(r => r.platform === p).map(r => [r.date, r[state.metric]]));
+    const color = css(`--${p}`);
+    // Dager med publisering får et synlig punkt; de øvrige dagene ingen.
+    const published = labels.map(d => (POSTS[p + d] ? 4.5 : 0));
+    return { label: NAMES[p], key: p, data: labels.map(d => byDate[d] ?? null),
+             borderColor: color, backgroundColor: color, borderWidth: 2,
+             pointRadius: published, pointHoverRadius: published.map(r => (r ? 7 : 5)),
+             pointBackgroundColor: color, pointBorderColor: css("--surface"), pointBorderWidth: 2,
+             pointHoverBorderWidth: 2, pointHoverBorderColor: css("--surface"),
+             spanGaps: true, tension: 0.2 };
+  }).filter(ds => ds.data.some(v => v !== null));
+
+  document.getElementById("metric-note").textContent =
+    `${METRICS[state.metric][1]} Punktene på linjene er dager det ble publisert: hold over for å se hva, og klikk for å åpne innlegget.`;
+  if (chart) { chart.destroy(); chart = null; }
+  const empty = datasets.length === 0;
+  document.getElementById("chart-empty").hidden = !empty;
+  document.getElementById("chart").hidden = empty;
+  if (empty) return;
+  chart = new Chart(document.getElementById("chart"), {
+    type: "line",
+    data: { labels, datasets },
+    plugins: [endLabels],
+    options: {
+      maintainAspectRatio: false, animation: false,
+      layout: { padding: { right: 72 } },
+      interaction: { mode: "index", intersect: false },
+      onClick: (e, els, c) => {
+        if (!els.length) return;
+        const ds = c.data.datasets[els[0].datasetIndex];
+        const post = (POSTS[ds.key + c.data.labels[els[0].index]] || [])[0];
+        if (post && post.url) window.open(post.url, "_blank", "noopener");
+      },
+      onHover: (e, els, c) => {
+        const over = els.some(el => POSTS[c.data.datasets[el.datasetIndex].key + c.data.labels[el.index]]);
+        c.canvas.style.cursor = over ? "pointer" : "default";
+      },
+      plugins: {
+        legend: { position: "top", align: "start",
+                  labels: { color: css("--ink-2"), usePointStyle: true, pointStyle: "circle", boxWidth: 8, boxHeight: 8 } },
+        tooltip: { backgroundColor: css("--surface"), titleColor: css("--ink"), bodyColor: css("--ink-2"),
+                   footerColor: css("--ink"), borderColor: css("--border"), borderWidth: 1, padding: 10,
+                   usePointStyle: true, footerFont: { weight: "400" }, footerMarginTop: 8,
+                   callbacks: {
+                     label: ctx => ` ${ctx.dataset.label}: ${num(ctx.parsed.y)}`,
+                     footer: items => {
+                       const d = items.length ? items[0].label : null;
+                       if (!d) return "";
+                       const lines = [];
+                       ORDER.forEach(p => (POSTS[p + d] || []).forEach(x =>
+                         lines.push(`${NAMES[p]}: ${x.caption || "(uten tekst)"}`)));
+                       return lines.length ? ["Publisert denne dagen:", ...lines, "Klikk for å åpne"] : "";
+                     },
+                   } },
+      },
+      scales: {
+        x: { grid: { display: false }, border: { color: css("--axis") },
+             ticks: { color: css("--muted"), maxTicksLimit: 8, maxRotation: 0 } },
+        y: { beginAtZero: state.metric !== "followers", grid: { color: css("--grid") }, border: { display: false },
+             ticks: { color: css("--muted"), callback: v => cf.format(v) } },
+      },
+    },
+  });
+}
+
+let sortKey = "engagements", sortDir = -1;
+function renderPosts() {
+  const cols = [["platform", "Plattform"], ["published", "Publisert"], ["caption", "Innlegg"], ["views", "Visninger"],
+                ["reach", "Rekkevidde"], ["likes", "Likes"], ["comments", "Kommentarer"], ["shares", "Delinger"],
+                ["engagements", "Engasjement"], ["engagement_rate", "Rate"]];
+  const posts = [...DATA.top_posts].sort((a, b) => {
+    const x = a[sortKey], y = b[sortKey];
+    if (x === y) return 0; if (x === null) return 1; if (y === null) return -1;
+    return (x > y ? 1 : -1) * sortDir;
+  });
+  const table = document.getElementById("posts");
+  table.innerHTML = `<thead><tr>${cols.map(([k, l]) =>
+      `<th data-k="${k}">${l}${k === sortKey ? (sortDir < 0 ? " ↓" : " ↑") : ""}</th>`).join("")}</tr></thead>
+    <tbody>${posts.length ? posts.map(r => `<tr>
+      <td><span class="chip"><span class="dot" style="background:var(--${r.platform})"></span>${NAMES[r.platform]}</span></td>
+      <td>${esc(r.published)}</td>
+      <td class="caption"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.caption || "(uten tekst)")}</a></td>
+      <td>${num(r.views)}</td><td>${num(r.reach)}</td><td>${num(r.likes)}</td><td>${num(r.comments)}</td>
+      <td>${num(r.shares)}</td><td>${num(r.engagements)}</td>
+      <td>${r.engagement_rate !== null ? pf.format(r.engagement_rate) : "–"}</td></tr>`).join("")
+      : `<tr><td colspan="10" class="muted">Ingen innlegg ennå.</td></tr>`}</tbody>`;
+  table.querySelector("thead").onclick = e => {
+    const th = e.target.closest("th"); if (!th) return;
+    sortDir = th.dataset.k === sortKey ? -sortDir : -1; sortKey = th.dataset.k; renderPosts();
+  };
+}
+
+function renderStatus() {
+  const icon = { ok: "✓", skipped: "–", error: "⚠" };
+  const label = { ok: "OK", skipped: "ikke koblet til", error: "feil" };
+  document.getElementById("status").innerHTML = DATA.status.length ? DATA.status.map(s =>
+    `<span title="${esc(s.message)}">${icon[s.status] || "?"} ${NAMES[s.platform] || esc(s.platform)}: ${label[s.status] || esc(s.status)}
+      ${s.message ? `<span class="muted">– ${esc(s.message.slice(0, 120))}</span>` : ""}</span>`).join("")
+    : `<span class="muted">Ingen kjøringer ennå.</span>`;
+  document.getElementById("notes").innerHTML = ORDER.map(p =>
+    `<p><strong>${NAMES[p]}:</strong> ${esc(DATA.platforms[p].note)}</p>`).join("");
+}
+
+const qs = new URLSearchParams(location.search);
+document.getElementById("auth-banner").hidden = !(qs.has("code") || qs.has("auth_code"));
+
+segmented("metric", Object.entries(METRICS).map(([k, [l]]) => [k, l]), "metric");
+segmented("range", RANGES, "range");
+renderCards(); renderChart(); renderPosts(); renderStatus();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderChart);
+new MutationObserver(renderChart).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+</script>
+</body>
+</html>
