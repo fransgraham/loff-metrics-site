@@ -184,17 +184,381 @@
 <main>
   <header>
     <h1><img id="logo" src="data:image/png;base64,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" alt="Loff"></h1>
-    <nav class="tabs" aria-label="Prosjekter"><a href="../?v=202610211935">Loff</a><a href="../nammenam/?v=202610211935">Nammenam</a><a href="../mektig-mat-med-makta/?v=202610211935" aria-current="page">Mektig mat med makta</a><a href="../skinny-e/?v=202610211935">Skinny E</a><a href="../safaris-shoeshine/?v=202610211935">Safari&#x27;s Shoeshine</a><a href="../safari-pa-safari/?v=202610211935">Safari på safari</a><a href="../emil/?v=202610211935">Emil Wæraas</a><a href="../samarbeid/?v=202610211935">Samarbeid</a><a href="../annonsorer/?v=202610211935">Annonsører</a></nav>
+    <nav class="tabs" aria-label="Prosjekter"><a href="../?v=202610220709">Loff</a><a href="../nammenam/?v=202610220709">Nammenam</a><a href="../mektig-mat-med-makta/?v=202610220709" aria-current="page">Mektig mat med makta</a><a href="../skinny-e/?v=202610220709">Skinny E</a><a href="../safaris-shoeshine/?v=202610220709">Safari&#x27;s Shoeshine</a><a href="../safari-pa-safari/?v=202610220709">Safari på safari</a><a href="../emil/?v=202610220709">Emil Wæraas</a><a href="../samarbeid/?v=202610220709">Samarbeid</a><a href="../annonsorer/?v=202610220709">Annonsører</a></nav>
     <div class="project-name" id="project-name"></div>
     <p id="subtitle"></p>
-    <p class="ask"><a id="ask-link" href="https://github.com/fransgraham/loff-metrics/issues/new?labels=sp%C3%B8rsm%C3%A5l&title=Sp%C3%B8rsm%C3%A5l%20om%20Mektig%20mat%20med%20makta&body=Fane%3A%20mektig-mat-med-makta%0A%0A%3C%21--%20Skriv%20sp%C3%B8rsm%C3%A5let%20ditt%20under.%20Svaret%20kommer%20som%20kommentar%20om%20et%20minutt.%20--%3E%0A">Spør om tallene ↗</a></p>
+    <p class="ask"><a id="ask-link" href="">Spør om tallene ↗</a></p>
   </header>
 
-  <section class="cards" id="cards"></section>
+  <!-- Velg hva du vil se, i stedet for å scrolle gjennom alt. Brukes av forsiden og prosjektsidene. -->
+<nav class="views" id="views" aria-label="Velg visning"></nav>
+<style>
+  .views { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 18px; }
+  .views button { font: inherit; font-size: 14px; font-weight: 600; padding: 7px 14px; border-radius: 999px;
+    cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--ink-2); }
+  .views button:hover { color: var(--ink); }
+  .views button[aria-pressed="true"] { background: var(--accent); color: #1e103b; border-color: var(--accent); }
+  .views button:focus-visible, .toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  [data-view][hidden] { display: none; }
+  .toggle { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--border); background: none; color: var(--ink-2); }
+  .toggle[aria-pressed="true"] { background: var(--accent); color: #1e103b; border-color: var(--accent); font-weight: 700; }
+  details.why { margin: 12px 0 0; }
+  details.why summary { cursor: pointer; font-size: 13px; color: var(--muted); }
+  details.why p { margin-top: 8px; }
+</style>
+<script>
+// initViews(rekkefølge, nøkkel, ved bytte) – knapper som viser én [data-view]-seksjon om gangen.
+// Seksjoner uten synlig innhold får ingen knapp, så sider der noe er fjernet (kundesider, manglende
+// chat) ikke ender med en tom visning.
+const VIEW_LABELS = { oversikt: "Oversikt", utvikling: "Utvikling", innhold: "Innhold", publikum: "Publikum",
+                      rapport: "Rapport", metode: "Metode", spor: "Spør" };
 
-  <script>const CHAT_ENDPOINT = "";</script>
+function initViews(order, storageKey, onChange) {
+  const nav = document.getElementById("views");
+  const lagret = (() => { try { return localStorage.getItem(storageKey); } catch (e) { return null; } })();
 
-  <section class="panel" id="episodes-panel">
+  const finnes = () => [...document.querySelectorAll("[data-view]")]
+    .filter(el => [...el.children].some(c => c.tagName !== "SCRIPT" && !(c.tagName === "STYLE")))
+    .map(el => el.dataset.view);
+
+  function vis(v) {
+    const tilgjengelige = finnes();
+    if (!tilgjengelige.includes(v)) v = order.find(k => tilgjengelige.includes(k)) || tilgjengelige[0];
+    document.querySelectorAll("[data-view]").forEach(el => (el.hidden = el.dataset.view !== v));
+    nav.innerHTML = order.filter(k => tilgjengelige.includes(k)).map(k =>
+      `<button type="button" data-v="${k}" aria-pressed="${k === v}">${VIEW_LABELS[k] || k}</button>`).join("");
+    try { localStorage.setItem(storageKey, v); } catch (e) {}
+    onChange && onChange(v);
+  }
+
+  nav.onclick = e => {
+    const b = e.target.closest("button");
+    if (b) vis(b.dataset.v);
+  };
+  vis(lagret || order[0]);
+  return { vis };
+}
+</script>
+
+
+  <section class="cards" id="cards" data-view="oversikt"></section>
+
+  <!-- Kurven «Utvikling per dag». Brukes av forsiden og av prosjektsider med egne kontoer. -->
+<section class="panel" data-view="utvikling">
+  <div class="panel-head">
+    <h2>Utvikling per dag</h2>
+    <div class="controls">
+      <div class="seg" id="metric" role="group" aria-label="Metrikk"></div>
+      <div class="seg" id="range" role="group" aria-label="Periode"></div>
+    </div>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="chart" aria-label="Linjediagram per plattform"></canvas>
+    <p class="chart-empty" id="chart-empty" hidden>Ingen data for denne metrikken i perioden ennå.</p>
+  </div>
+  <p class="note" id="metric-note"></p>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+// initChart({daily, posts, order, names, generated, state, save}) – tegner kurven og kobler opp knappene.
+// Punktene på linjene er dager det ble publisert; klikk åpner innlegget.
+const CHART_METRICS = {
+  views: ["Visninger", "Visninger per dag. YouTube: videovisninger. TikTok: økning i totale videovisninger siden forrige dag."],
+  reach: ["Rekkevidde", "Unike kontoer nådd per dag. Bare Instagram har dette."],
+  impressions: ["Impressions", "Thumbnail-visninger på YouTube – nærmeste mål på rekkevidde der."],
+  engagements: ["Engasjement", "Instagram: total_interactions. YouTube/TikTok: likes + kommentarer + delinger."],
+  followers: ["Følgere", "Følgere/abonnenter. Plattformene ligger på svært ulikt nivå."],
+  likes: ["Likes", ""],
+  comments: ["Kommentarer", ""],
+  shares: ["Delinger", ""],
+};
+const CHART_RANGES = [["28", "28 d"], ["90", "90 d"], ["180", "180 d"]];
+
+function initChart(opts) {
+  const { daily, posts, order, names, generated, state, save } = opts;
+  const el = id => document.getElementById(id);
+  const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const nf = new Intl.NumberFormat("nb-NO");
+  const cf = new Intl.NumberFormat("nb-NO", { notation: "compact", maximumFractionDigits: 1 });
+  const num = v => (v === null || v === undefined) ? "–" : nf.format(Math.round(v));
+  const POSTS = {};
+  (posts || []).forEach(r => (POSTS[r.platform + r.date] = POSTS[r.platform + r.date] || []).push(r));
+  let chart = null;
+
+  // Navnet på hver linje skrives ved siste punkt, så fargene slipper å forklares.
+  const endLabels = {
+    id: "endLabels",
+    afterDatasetsDraw(c) {
+      const ctx = c.ctx;
+      ctx.save();
+      ctx.font = '700 11px "Fira Sans", system-ui, sans-serif';
+      ctx.textBaseline = "middle";
+      c.data.datasets.forEach((ds, i) => {
+        const meta = c.getDatasetMeta(i);
+        if (meta.hidden) return;
+        const pts = meta.data.filter((p, idx) => ds.data[idx] !== null && ds.data[idx] !== undefined);
+        const last = pts[pts.length - 1];
+        if (!last) return;
+        ctx.fillStyle = ds.borderColor;
+        ctx.fillText(ds.label, last.x + 8, last.y);
+      });
+      ctx.restore();
+    },
+  };
+
+  function draw() {
+    const cutoff = new Date(generated); cutoff.setDate(cutoff.getDate() - Number(state.range));
+    const cut = cutoff.toISOString().slice(0, 10);
+    const rows = daily.filter(r => r.date >= cut && r.date < generated);
+    const labels = [...new Set(rows.map(r => r.date))].sort();
+    const datasets = order.map(p => {
+      const byDate = Object.fromEntries(rows.filter(r => r.platform === p).map(r => [r.date, r[state.metric]]));
+      const color = css(`--${p}`);
+      const published = labels.map(d => (POSTS[p + d] ? 4.5 : 0));
+      return { label: names[p], key: p, data: labels.map(d => byDate[d] ?? null),
+               borderColor: color, backgroundColor: color, borderWidth: 2,
+               pointRadius: published, pointHoverRadius: published.map(r => (r ? 7 : 5)),
+               pointBackgroundColor: color, pointBorderColor: css("--surface"), pointBorderWidth: 2,
+               pointHoverBorderWidth: 2, pointHoverBorderColor: css("--surface"),
+               spanGaps: true, tension: 0.2 };
+    }).filter(ds => ds.data.some(v => v !== null));
+
+    // Datadekning: innsamlingen startet på et tidspunkt, og et tynt grunnlag skal ikke leses som en trend.
+    const days = new Set(rows.map(r => r.date)).size;
+    const coverage = days / Number(state.range);
+    el("metric-note").innerHTML =
+      (coverage < 0.8 ? `<span class="thin" title="Bare ${days} av ${state.range} dager har data. Perioden før innsamlingen startet ser flat ut uten å ha vært det.">⚠ ${Math.round(coverage * 100)} % datadekning.</span> ` : "")
+      + CHART_METRICS[state.metric][1];
+    if (chart) { chart.destroy(); chart = null; }
+    const empty = datasets.length === 0;
+    el("chart-empty").hidden = !empty;
+    el("chart").hidden = empty;
+    if (empty) return;
+    chart = new Chart(el("chart"), {
+      type: "line",
+      data: { labels, datasets },
+      plugins: [endLabels],
+      options: {
+        maintainAspectRatio: false, animation: false,
+        layout: { padding: { right: 72 } },
+        interaction: { mode: "index", intersect: false },
+        onClick: (e, els, c) => {
+          if (!els.length) return;
+          const ds = c.data.datasets[els[0].datasetIndex];
+          const post = (POSTS[ds.key + c.data.labels[els[0].index]] || [])[0];
+          if (post && post.url) window.open(post.url, "_blank", "noopener");
+        },
+        onHover: (e, els, c) => {
+          const over = els.some(x => POSTS[c.data.datasets[x.datasetIndex].key + c.data.labels[x.index]]);
+          c.canvas.style.cursor = over ? "pointer" : "default";
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: { backgroundColor: css("--surface"), titleColor: css("--ink"), bodyColor: css("--ink-2"),
+                     footerColor: css("--ink"), borderColor: css("--border"), borderWidth: 1, padding: 10,
+                     usePointStyle: true, footerFont: { weight: "400" }, footerMarginTop: 8,
+                     callbacks: {
+                       label: ctx => ` ${ctx.dataset.label}: ${num(ctx.parsed.y)}`,
+                       footer: items => {
+                         const d = items.length ? items[0].label : null;
+                         if (!d) return "";
+                         const lines = [];
+                         order.forEach(p => (POSTS[p + d] || []).forEach(x =>
+                           lines.push(`${names[p]}: ${x.caption || "(uten tekst)"}`)));
+                         return lines.length ? ["Publisert denne dagen:", ...lines, "Klikk for å åpne"] : "";
+                       },
+                     } },
+        },
+        scales: {
+          x: { grid: { display: false }, border: { color: css("--axis") },
+               // Korte datoer, ellers løper de i hverandre på mobil.
+               ticks: { color: css("--muted"), maxTicksLimit: 6, maxRotation: 0, autoSkipPadding: 16,
+                        callback(v) { const d = this.getLabelForValue(v); return d ? d.slice(8) + "." + d.slice(5, 7) : d; } } },
+          y: { beginAtZero: state.metric !== "followers", grid: { color: css("--grid") }, border: { display: false },
+               ticks: { color: css("--muted"), callback: v => cf.format(v) } },
+        },
+      },
+    });
+  }
+
+  function seg(id, options, key) {
+    const box = el(id);
+    box.innerHTML = options.map(([v, label]) =>
+      `<button type="button" data-v="${v}" aria-pressed="${state[key] === v}">${label}</button>`).join("");
+    box.onclick = ev => {
+      const b = ev.target.closest("button"); if (!b) return;
+      state[key] = b.dataset.v;
+      save && save();
+      box.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+      draw();
+    };
+  }
+
+  // Bare metrikker som faktisk har tall for denne kontoen.
+  const available = Object.keys(CHART_METRICS).filter(m => daily.some(r => r[m] !== null && r[m] !== undefined));
+  if (!available.includes(state.metric)) state.metric = available[0] || "views";
+  seg("metric", available.map(m => [m, CHART_METRICS[m][0]]), "metric");
+  seg("range", CHART_RANGES, "range");
+  draw();
+  window.addEventListener("resize", () => chart && chart.resize());
+  return { draw };
+}
+</script>
+
+
+  <div data-view="spor"><!-- Chat om tallene. Sendes til Cloudflare-workeren (worker/), som holder API-nøkkelen. Bare interne sider. -->
+<style>
+  /* Chatten: rolig og lesbar som en samtale. Spørsmålet ditt i en boble til høyre, svaret som vanlig tekst under. */
+  #chat-panel { display: grid; gap: 0; }
+  .chat-log { display: grid; gap: 22px; margin: 0 0 20px; }
+  .chat-log:empty { display: none; }
+  .msg { display: grid; gap: 6px; font-size: 15px; line-height: 1.65; max-width: 68ch; }
+  .msg.me { justify-items: end; justify-self: end; }
+  .msg .who { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+  .msg.me .bubble { background: var(--accent); color: #1e103b; border-radius: 14px 14px 4px 14px; padding: 10px 14px; }
+  .msg .bubble { overflow-wrap: anywhere; }
+  .msg .bubble > :first-child { margin-top: 0; }
+  .msg .bubble > :last-child { margin-bottom: 0; }
+  .msg .bubble h1, .msg .bubble h2, .msg .bubble h3 { font-size: 15px; margin: 18px 0 6px; }
+  .msg .bubble p { margin: 0 0 10px; }
+  .msg .bubble table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 12px 0; }
+  .msg .bubble th { text-align: left; font-weight: 600; color: var(--ink-2); border-bottom: 2px solid var(--border); }
+  .msg .bubble th, .msg .bubble td { padding: 6px 10px 6px 0; border-bottom: 1px solid var(--border); white-space: normal; }
+  .msg .bubble ul, .msg .bubble ol { margin: 10px 0; padding-left: 20px; }
+  .msg .bubble li { margin: 4px 0; }
+  .msg .bubble code { background: var(--page); border: 1px solid var(--border); border-radius: 4px; padding: 1px 5px; font-size: 13px; }
+  .dots span { display: inline-block; width: 6px; height: 6px; margin-right: 3px; border-radius: 50%;
+               background: var(--muted); animation: blink 1.2s infinite; }
+  .dots span:nth-child(2) { animation-delay: 0.2s; }
+  .dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%, 60%, 100% { opacity: 0.25; } 30% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .dots span { animation: none; opacity: 0.5; } }
+
+  .chat-form { display: grid; gap: 10px; }
+  .chat-suggest { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chat-suggest button { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 999px; cursor: pointer;
+    border: 1px solid var(--border); background: var(--surface); color: var(--ink-2); }
+  .chat-suggest button:hover { background: var(--accent); color: #1e103b; border-color: var(--accent); }
+  .chat-box { display: flex; align-items: flex-end; gap: 8px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 8px 8px 8px 14px; }
+  .chat-box:focus-within { border-color: var(--ink); }
+  .chat-box textarea { flex: 1; font: inherit; font-size: 15px; line-height: 1.5; color: var(--ink); background: none;
+    border: 0; resize: none; padding: 8px 0; max-height: 180px; }
+  .chat-box textarea:focus { outline: none; }
+  .chat-box button { width: 38px; height: 38px; flex: none; border: 0; border-radius: 50%; background: var(--accent);
+    color: #1e103b; font-size: 17px; font-weight: 700; cursor: pointer; }
+  .chat-box button[disabled] { opacity: 0.45; cursor: progress; }
+  .chat-box button:focus-visible, .chat-suggest button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .chat-hint { color: var(--muted); font-size: 12px; margin: 0; }
+  .chat-error { color: var(--down); font-size: 13px; margin: 0; }
+</style>
+<section class="panel" id="chat-panel" hidden>
+  <div class="panel-head"><h2>Spør om tallene</h2></div>
+  <div class="chat-log" id="chat-log"></div>
+  <form class="chat-form" id="chat-form">
+    <div class="chat-suggest" id="chat-suggest"></div>
+    <div class="chat-box">
+      <textarea id="chat-input" rows="1" placeholder="Spør om tallene på denne fanen …"></textarea>
+      <button type="submit" id="chat-send" aria-label="Send spørsmål" title="Send (⌘ + Enter)">↑</button>
+    </div>
+    <p class="chat-hint" id="chat-hint">Svarene bygger bare på tallene på denne fanen. Sjekk tallene som oppgis før du
+      bruker dem videre.</p>
+    <p class="chat-error" id="chat-error" hidden></p>
+  </form>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/14.1.2/marked.min.js"></script>
+<script>
+// initChat(endepunkt, fanenavn, () => tall som sendes med, [forslag])
+function initChat(endpoint, tabName, buildContext, suggestions) {
+  if (!endpoint) return;
+  const panel = document.getElementById("chat-panel");
+  const log = document.getElementById("chat-log"), form = document.getElementById("chat-form");
+  const input = document.getElementById("chat-input"), send = document.getElementById("chat-send");
+  const error = document.getElementById("chat-error"), suggest = document.getElementById("chat-suggest");
+  const KEY = "loff-chat-passord";
+  const history = [];
+  panel.hidden = false;
+
+  const store = (() => { try { return window.localStorage; } catch (e) { return null; } })();
+  const password = () => { try { return store && store.getItem(KEY); } catch (e) { return null; } };
+  const escape = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const render = md => (window.marked ? marked.parse(md, { breaks: true }) : `<p>${escape(md)}</p>`);
+
+  function bubble(who, html, cls) {
+    const el = document.createElement("div");
+    el.className = `msg ${cls || ""}`;
+    el.innerHTML = `<span class="who">${escape(who)}</span><div class="bubble">${html}</div>`;
+    log.appendChild(el);
+    el.scrollIntoView({ block: "nearest" });
+    return el;
+  }
+
+  (suggestions || []).forEach(q => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = q;
+    b.onclick = () => { input.value = q; form.requestSubmit(); };
+    suggest.appendChild(b);
+  });
+
+  async function ask(question, retryWith) {
+    // Passord spørres bare om når endepunktet faktisk krever det (svarer 401).
+    const pw = retryWith || password() || "";
+    bubble("Du", `<p>${escape(question)}</p>`, "me");
+    suggest.hidden = true;
+    const pending = bubble(tabName, '<p class="dots"><span></span><span></span><span></span></p>');
+    send.disabled = true;
+    error.hidden = true;
+    try {
+      const resp = await fetch(endpoint, {
+        method: "POST",
+        headers: { "content-type": "application/json", ...(pw ? { "x-chat-password": pw } : {}) },
+        body: JSON.stringify({ tab: tabName, question, context: buildContext(), history }),
+      });
+      const data = await resp.json().catch(() => ({}));
+      if (resp.status === 401) {
+        try { store && store.removeItem(KEY); } catch (e) {}
+        pending.remove();
+        log.lastElementChild && log.lastElementChild.remove();      // fjern spørsmålet, det kommer igjen ved nytt forsøk
+        const entered = window.prompt("Passord for chatten:");
+        if (!entered) throw new Error("Trenger passord for å spørre.");
+        try { store && store.setItem(KEY, entered); } catch (e) {}
+        send.disabled = false;
+        return ask(question, entered);
+      }
+      if (!resp.ok || data.error) throw new Error(data.error || `Noe gikk galt (${resp.status}).`);
+      pending.querySelector(".bubble").innerHTML = render(data.answer || "Fikk ikke noe svar.");
+      history.push({ role: "user", content: question }, { role: "assistant", content: data.answer || "" });
+    } catch (e) {
+      pending.remove();
+      error.textContent = e.message;
+      error.hidden = false;
+    } finally {
+      send.disabled = false;
+    }
+  }
+
+  form.addEventListener("submit", ev => {
+    ev.preventDefault();
+    const q = input.value.trim();
+    if (!q) return;
+    input.value = "";
+    ask(q);
+  });
+  input.addEventListener("keydown", ev => {
+    if (ev.key === "Enter" && (ev.metaKey || ev.ctrlKey)) form.requestSubmit();
+  });
+  // Feltet vokser med teksten, som i en vanlig chat.
+  input.addEventListener("input", () => {
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 180) + "px";
+  });
+}
+</script>
+<script>const CHAT_ENDPOINT = "https://loff-chat.fransgraham.workers.dev";</script></div>
+
+  <section class="panel" id="episodes-panel" data-view="innhold">
     <div class="panel-head"><h2>Hele episoder</h2></div>
     <div class="table-wrap"><table class="sortable" id="episodes"></table></div>
     <p class="note">Hele episoder er YouTube-videoer på minst <span id="min-minutes"></span> minutter. «Ser 25 %» kan
@@ -203,34 +567,36 @@
       Resten av tallene er slik episodene står i dag.</p>
   </section>
 
-  <section class="panel">
+  <section class="panel" data-view="publikum">
     <div class="panel-head"><h2 id="audience-title"></h2>
       <div class="controls"><div class="seg" id="aud-platform" role="group" aria-label="Plattform" hidden></div></div></div>
     <div class="audience" id="audience"></div>
     <p class="note" id="audience-note"></p>
   </section>
 
-  <section class="panel">
+  <section class="panel" data-view="oversikt">
     <div class="panel-head"><h2>Outtakes og klipp per plattform</h2></div>
     <div class="table-wrap"><table id="platforms"></table></div>
+    <details class="why"><summary>Hvordan leses disse tallene?</summary>
     <p class="note">Median per klipp: halvparten gjorde det bedre, halvparten dårligere. Delinger og kommentarer per
       1 000 visninger er summert over alle klippene. «–» betyr at plattformen ikke oppgir tallet: Instagram gir seertall
       bare for reels, YouTube oppgir ikke 3 sekunder, og TikTok gir ingen seertall uten Business-konto.</p>
+    </details>
   </section>
 
-  <section class="panel" id="clips-panel">
+  <section class="panel" id="clips-panel" data-view="innhold">
     <div class="panel-head"><h2>Alle outtakes og klipp</h2></div>
     <div class="table-wrap"><table class="sortable" id="clips"></table></div>
   </section>
 
-  <section class="panel" id="explain-panel">
+  <section class="panel" id="explain-panel" data-view="metode">
     <div class="panel-head"><h2>Slik er innholdet sortert</h2></div>
     <div class="explain" id="explain"></div>
   </section>
 </main>
 
 <script>
-const DATA = {"account": "Loff", "generated": "2026-10-21", "name": "Mektig mat med makta", "episode_min_minutes": 8, "has_playlist": false, "own_accounts": [], "instagram_audience": null, "own_accounts_only": false, "only_with_views": false, "demographics": {"period": "alle episoder", "captured_on": "2026-10-21", "age": [{"bucket": "13-17", "pct": 2.9}, {"bucket": "18-24", "pct": 17.1}, {"bucket": "25-34", "pct": 46.2}, {"bucket": "35-44", "pct": 22.2}, {"bucket": "45-54", "pct": 9.2}, {"bucket": "55-64", "pct": 1.5}, {"bucket": "65+", "pct": 0.8}], "country": [{"bucket": "NO", "pct": 99.7}, {"bucket": "DK", "pct": 0.1}, {"bucket": "SE", "pct": 0.1}, {"bucket": "ES", "pct": 0.0}, {"bucket": "GB", "pct": 0.0}, {"bucket": "US", "pct": 0.0}, {"bucket": "NL", "pct": 0.0}, {"bucket": "AU", "pct": 0.0}, {"bucket": "DE", "pct": 0.0}, {"bucket": "FR", "pct": 0.0}, {"bucket": "IT", "pct": 0.0}], "follow": [{"bucket": "non_followers", "pct": 86.3}, {"bucket": "followers", "pct": 13.7}], "gender": [{"bucket": "male", "pct": 94.4}, {"bucket": "female", "pct": 5.6}]}, "episodes": {"summary": {"count": 3, "views_total": 165787.0, "median_views": 63322.0, "shares_per_1k": 0.93, "comments_per_1k": 0.32, "median_avg_watch_time_s": 273.0, "median_watch_through_pct": 34.11, "median_hold_3s_pct": null, "median_retention_25_pct": 53.3, "median_retention_50_pct": 45.9, "median_retention_100_pct": 19.7}, "items": [{"account": "Loff", "platform": "youtube", "post_id": "YzGN4uR4l64", "published": "2026-09-25", "caption": "Blir satt ut av Eurojackpot-hack | Petter Stordalen | Mektig mat med makta", "url": "https://www.youtube.com/watch?v=YzGN4uR4l64", "views": 63322.0, "reach": null, "likes": 320.0, "comments": 7.0, "shares": 48.0, "saves": null, "shares_per_1k": 0.76, "comments_per_1k": 0.11, "avg_watch_time_s": 273.0, "watch_through_pct": 34.11, "hold_3s_pct": null, "retention_25_pct": 49.1, "retention_50_pct": 40.2, "retention_100_pct": 20.9, "ctr_pct": 26.7, "seconds": 802, "source": "ai", "reason": "Hel episode med programnavn i tittelen."}, {"account": "Loff", "platform": "youtube", "post_id": "cHC-ELrA3lY", "published": "2026-09-11", "caption": "Hvorfor hater Trump Norge? | Espen Barth Eide | Mektig mat med makta", "url": "https://www.youtube.com/watch?v=cHC-ELrA3lY", "views": 15711.0, "reach": null, "likes": 199.0, "comments": 22.0, "shares": 59.0, "saves": null, "shares_per_1k": 3.76, "comments_per_1k": 1.4, "avg_watch_time_s": 350.0, "watch_through_pct": 59.24, "hold_3s_pct": null, "retention_25_pct": 68.3, "retention_50_pct": 60.3, "retention_100_pct": 19.7, "ctr_pct": 16.4, "seconds": 591, "source": "ai", "reason": "Hel episode med Espen Barth Eide."}, {"account": "Loff", "platform": "youtube", "post_id": "BAqkpcUSmb8", "published": "2026-09-11", "caption": "Hvorfor er formueskatten så cringe? | Simen Velle | Mektig mat med makta", "url": "https://www.youtube.com/watch?v=BAqkpcUSmb8", "views": 86754.0, "reach": null, "likes": 302.0, "comments": 24.0, "shares": 48.0, "saves": null, "shares_per_1k": 0.55, "comments_per_1k": 0.28, "avg_watch_time_s": 163.0, "watch_through_pct": 29.5, "hold_3s_pct": null, "retention_25_pct": 53.3, "retention_50_pct": 45.9, "retention_100_pct": 18.2, "ctr_pct": 154.9, "seconds": 555, "source": "ai", "reason": "Hel episode med Simen Velle."}]}, "clips": {"summary": {"count": 14, "views_total": 297500.0, "median_views": 18381.5, "shares_per_1k": 9.33, "comments_per_1k": 0.29, "median_avg_watch_time_s": 16.28, "median_watch_through_pct": null, "median_hold_3s_pct": 55.0, "median_retention_25_pct": null, "median_retention_50_pct": null, "median_retention_100_pct": null}, "items": [{"account": "Loff", "platform": "instagram", "post_id": "17906273742551246", "published": "2026-09-25", "caption": "Snakk om å være like!\n🚨Ny episode ute på glanekassa🚨 Samarbeid med NHO👑", "url": "https://www.instagram.com/reel/DduHJFdodPO/", "views": 13537.0, "reach": 8635.0, "likes": 258.0, "comments": 4.0, "shares": 196.0, "saves": 15.0, "shares_per_1k": 14.48, "comments_per_1k": 0.3, "avg_watch_time_s": 16.28, "watch_through_pct": null, "hold_3s_pct": 50.2, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Samme klipp som TikTok 24.9 om at Fredrik og Petter er like, med NHO-samarbeid og ny episode – altså Mektig mat med makta."}, {"account": "Loff", "platform": "instagram", "post_id": "18378636904234079", "published": "2026-09-24", "caption": "3–4 dager er en fantastisk morsom alder 👶🏼👨‍🍼 Ny episode ute🚨Samarbeid med NHO👊🏼", "url": "https://www.instagram.com/reel/DdqixjnoFW-/", "views": 23460.0, "reach": 15017.0, "likes": 443.0, "comments": 8.0, "shares": 541.0, "saves": 23.0, "shares_per_1k": 23.06, "comments_per_1k": 0.34, "avg_watch_time_s": 16.77, "watch_through_pct": null, "hold_3s_pct": 55.0, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Samme klipp på Instagram med NHO-samarbeid."}, {"account": "Loff", "platform": "tiktok", "post_id": "7689027760043347222", "published": "2026-09-24", "caption": "3–4 dager er en fantastisk morsom alder 👶🏼👨‍🍼 Ny episode ute🚨", "url": "https://www.tiktok.com/@_loff__/video/7689027760043347222?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 22284.0, "reach": null, "likes": 923.0, "comments": 3.0, "shares": 197.0, "saves": null, "shares_per_1k": 8.84, "comments_per_1k": 0.13, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Klipp fra samme nye Stordalen-episode."}, {"account": "Loff", "platform": "tiktok", "post_id": "7689027230583819542", "published": "2026-09-24", "caption": "Har du også ting du ikke er fan av, er du HELT lik Fredrik og Petter. Ny episode ute 🚨", "url": "https://www.tiktok.com/@_loff__/video/7689027230583819542?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 4763.0, "reach": null, "likes": 248.0, "comments": 4.0, "shares": 62.0, "saves": null, "shares_per_1k": 13.02, "comments_per_1k": 0.84, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Klipp med Petter Stordalen fra den nye episoden."}, {"account": "Loff", "platform": "instagram", "post_id": "17903166402353000", "published": "2026-09-23", "caption": "I hvilken grad er formuesskatten cringe? Samarbeid med NHO🍊", "url": "https://www.instagram.com/reel/DdoWGV3oFUv/", "views": 11701.0, "reach": 8926.0, "likes": 158.0, "comments": 1.0, "shares": 68.0, "saves": 13.0, "shares_per_1k": 5.81, "comments_per_1k": 0.09, "avg_watch_time_s": 19.18, "watch_through_pct": null, "hold_3s_pct": 48.7, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Formuesskatt-klipp med NHO-samarbeid, samme som Simen Velle-episoden."}, {"account": "Loff", "platform": "instagram", "post_id": "18133321606653363", "published": "2026-09-19", "caption": "Barth Eides serieanbefalinger. NB SPOILER ALERT!", "url": "https://www.instagram.com/reel/DddTAprIfok/", "views": 14479.0, "reach": 10345.0, "likes": 164.0, "comments": 2.0, "shares": 155.0, "saves": 10.0, "shares_per_1k": 10.71, "comments_per_1k": 0.14, "avg_watch_time_s": 13.33, "watch_through_pct": null, "hold_3s_pct": 57.4, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Samme Barth Eide-klipp postet på Instagram samme dag."}, {"account": "Loff", "platform": "tiktok", "post_id": "7687115158006549782", "published": "2026-09-19", "caption": "Barth Eide og Mango Mussolini 🍊💇", "url": "https://www.tiktok.com/@_loff__/video/7687115158006549782?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 2689.0, "reach": null, "likes": 99.0, "comments": 3.0, "shares": 21.0, "saves": null, "shares_per_1k": 7.81, "comments_per_1k": 1.12, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Barth Eide om Trump/toll, tema fra episoden."}, {"account": "Loff", "platform": "tiktok", "post_id": "7687112241627286806", "published": "2026-09-19", "caption": "Barth Eides smalltalk-tips! Hva er ditt beste tips?", "url": "https://www.tiktok.com/@_loff__/video/7687112241627286806?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 6468.0, "reach": null, "likes": 142.0, "comments": 0.0, "shares": 21.0, "saves": null, "shares_per_1k": 3.25, "comments_per_1k": 0.0, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Klipp med Barth Eide fra samme episode."}, {"account": "Loff", "platform": "tiktok", "post_id": "7687111283673550102", "published": "2026-09-19", "caption": "Barth Eides bordskikk og spisestil etikette. Ta notater!", "url": "https://www.tiktok.com/@_loff__/video/7687111283673550102?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 32046.0, "reach": null, "likes": 605.0, "comments": 4.0, "shares": 228.0, "saves": null, "shares_per_1k": 7.11, "comments_per_1k": 0.12, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Outtake med Barth Eide, samme episode."}, {"account": "Loff", "platform": "tiktok", "post_id": "7687110573959466262", "published": "2026-09-19", "caption": "Espen Barth Eides serienabefalinger. NB! SPOILER ALERT!", "url": "https://www.tiktok.com/@_loff__/video/7687110573959466262?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 4839.0, "reach": null, "likes": 132.0, "comments": 1.0, "shares": 35.0, "saves": null, "shares_per_1k": 7.23, "comments_per_1k": 0.21, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Klipp med gjesten Espen Barth Eide fra Mektig mat med makta."}, {"account": "Loff", "platform": "instagram", "post_id": "18097758983561149", "published": "2026-09-12", "caption": "Hvis det skulle være noen tvil om hvem som har fått mer eller mindre toll fra den oransje bassen over dammen, så har Fredrik regnet på det og Espen har sett over. Nå ligger det to episoder av Nammenam spinoffen «Mektig mat med makta» ute på tubern. Et godt betalt samarbeid med NHO som bare gir og gir.", "url": "https://www.instagram.com/reel/DdLdRmRI93r/", "views": 22465.0, "reach": 14828.0, "likes": 329.0, "comments": 2.0, "shares": 253.0, "saves": 20.0, "shares_per_1k": 11.26, "comments_per_1k": 0.09, "avg_watch_time_s": 13.96, "watch_through_pct": null, "hold_3s_pct": 61.7, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Klipp og kunngjøring om de to episodene av Mektig mat med makta."}, {"account": "Loff", "platform": "tiktok", "post_id": "7677601249658785046", "published": "2026-08-24", "caption": "Rydde litt i all forvirring rundt tollsatsene til appelsinen i det hvite hus🍊💇 Mye løses med å kunne regne opp i mente 🤝 samarbeid med NHO💸", "url": "https://www.tiktok.com/@_loff__/video/7677601249658785046?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 53943.0, "reach": null, "likes": 1791.0, "comments": 27.0, "shares": 437.0, "saves": null, "shares_per_1k": 8.1, "comments_per_1k": 0.5, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Toll og Trump i NHO-samarbeid, klipp fra episoden."}, {"account": "Loff", "platform": "tiktok", "post_id": "7675654644827278614", "published": "2026-08-19", "caption": "Greit å ha selvinnsikt nok til å vite hvem man er i guttegjengen. Espen har i hvert fall full oversikt 🤝 Samarbeid med NHO ", "url": "https://www.tiktok.com/@_loff__/video/7675654644827278614?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 26082.0, "reach": null, "likes": 1144.0, "comments": 9.0, "shares": 215.0, "saves": null, "shares_per_1k": 8.24, "comments_per_1k": 0.35, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "NHO-samarbeid med Espen Barth Eide, klipp fra episoden."}, {"account": "Loff", "platform": "tiktok", "post_id": "7673928465971744022", "published": "2026-08-14", "caption": "Hvorfor er formuesskatten så cringe?💸 @Simen Velle Samarbeid med NHO🥂", "url": "https://www.tiktok.com/@_loff__/video/7673928465971744022?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 58744.0, "reach": null, "likes": 3237.0, "comments": 19.0, "shares": 348.0, "saves": null, "shares_per_1k": 5.92, "comments_per_1k": 0.32, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Formuesskatt med Simen Velle og NHO-samarbeid, klipp fra episoden."}], "by_platform": {"instagram": {"count": 5, "views_total": 85642.0, "median_views": 14479.0, "shares_per_1k": 14.16, "comments_per_1k": 0.2, "median_avg_watch_time_s": 16.28, "median_watch_through_pct": null, "median_hold_3s_pct": 55.0, "median_retention_25_pct": null, "median_retention_50_pct": null, "median_retention_100_pct": null}, "tiktok": {"count": 9, "views_total": 211858.0, "median_views": 22284.0, "shares_per_1k": 7.38, "comments_per_1k": 0.33, "median_avg_watch_time_s": null, "median_watch_through_pct": null, "median_hold_3s_pct": null, "median_retention_25_pct": null, "median_retention_50_pct": null, "median_retention_100_pct": null}}}, "by_account": {}, "clip_view_share": 0.6422, "engagement": {"total": 13647, "likes": 10494, "comments": 140, "shares": 2932, "saves": 81, "rate_pct": 2.95, "top": {"caption": "Hvorfor er formuesskatten så cringe?💸 @Simen Velle Samarbeid med NHO🥂", "url": "https://www.tiktok.com/@_loff__/video/7673928465971744022?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "platform": "tiktok", "views": 58744.0, "engagements": 3604}, "best_rate": {"caption": "Hvorfor er formuesskatten så cringe?💸 @Simen Velle Samarbeid med NHO🥂", "url": "https://www.tiktok.com/@_loff__/video/7673928465971744022?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "platform": "tiktok", "views": 58744.0, "rate_pct": 6.1}}, "clip_reach": {"posts_with_reach": 5, "instagram_posts": 5, "median": 10345, "top": {"caption": "3–4 dager er en fantastisk morsom alder 👶🏼👨‍🍼 Ny episode ute🚨Samarbeid med NHO👊🏼", "url": "https://www.instagram.com/reel/DdqixjnoFW-/", "platform": "instagram", "views": 23460.0, "reach": 15017.0}}, "labels": [{"source": "ai", "n": 17}]};
+const DATA = {"account": "Loff", "generated": "2026-10-22", "name": "Mektig mat med makta", "prosjekt": "mektig-mat-med-makta", "episode_min_minutes": 8, "has_playlist": false, "own_accounts": [], "instagram_audience": null, "own_accounts_only": false, "daily": [], "posts_timeline": [], "platforms": {}, "only_with_views": false, "demographics": {"period": "alle episoder", "captured_on": "2026-10-22", "age": [{"bucket": "13-17", "pct": 2.9}, {"bucket": "18-24", "pct": 17.1}, {"bucket": "25-34", "pct": 46.2}, {"bucket": "35-44", "pct": 22.2}, {"bucket": "45-54", "pct": 9.2}, {"bucket": "55-64", "pct": 1.5}, {"bucket": "65+", "pct": 0.8}], "country": [{"bucket": "NO", "pct": 99.7}, {"bucket": "DK", "pct": 0.1}, {"bucket": "SE", "pct": 0.1}, {"bucket": "ES", "pct": 0.0}, {"bucket": "GB", "pct": 0.0}, {"bucket": "US", "pct": 0.0}, {"bucket": "NL", "pct": 0.0}, {"bucket": "AU", "pct": 0.0}, {"bucket": "DE", "pct": 0.0}, {"bucket": "FR", "pct": 0.0}, {"bucket": "IT", "pct": 0.0}], "follow": [{"bucket": "non_followers", "pct": 86.3}, {"bucket": "followers", "pct": 13.7}], "gender": [{"bucket": "male", "pct": 94.4}, {"bucket": "female", "pct": 5.6}]}, "episodes": {"summary": {"count": 3, "views_total": 165854.0, "median_views": 63362.0, "shares_per_1k": 0.93, "comments_per_1k": 0.32, "median_avg_watch_time_s": 273.0, "median_watch_through_pct": 34.11, "median_hold_3s_pct": null, "median_retention_25_pct": 53.3, "median_retention_50_pct": 45.9, "median_retention_100_pct": 19.7}, "items": [{"account": "Loff", "platform": "youtube", "post_id": "YzGN4uR4l64", "published": "2026-09-25", "caption": "Blir satt ut av Eurojackpot-hack | Petter Stordalen | Mektig mat med makta", "url": "https://www.youtube.com/watch?v=YzGN4uR4l64", "views": 63362.0, "reach": null, "likes": 320.0, "comments": 7.0, "shares": 48.0, "saves": null, "shares_per_1k": 0.76, "comments_per_1k": 0.11, "avg_watch_time_s": 273.0, "watch_through_pct": 34.11, "hold_3s_pct": null, "retention_25_pct": 49.1, "retention_50_pct": 40.2, "retention_100_pct": 20.9, "ctr_pct": 26.7, "seconds": 802, "source": "ai", "reason": "Hel episode med programnavn i tittelen."}, {"account": "Loff", "platform": "youtube", "post_id": "cHC-ELrA3lY", "published": "2026-09-11", "caption": "Hvorfor hater Trump Norge? | Espen Barth Eide | Mektig mat med makta", "url": "https://www.youtube.com/watch?v=cHC-ELrA3lY", "views": 15725.0, "reach": null, "likes": 199.0, "comments": 22.0, "shares": 59.0, "saves": null, "shares_per_1k": 3.75, "comments_per_1k": 1.4, "avg_watch_time_s": 350.0, "watch_through_pct": 59.24, "hold_3s_pct": null, "retention_25_pct": 68.3, "retention_50_pct": 60.3, "retention_100_pct": 19.7, "ctr_pct": 16.4, "seconds": 591, "source": "ai", "reason": "Hel episode med Espen Barth Eide."}, {"account": "Loff", "platform": "youtube", "post_id": "BAqkpcUSmb8", "published": "2026-09-11", "caption": "Hvorfor er formueskatten så cringe? | Simen Velle | Mektig mat med makta", "url": "https://www.youtube.com/watch?v=BAqkpcUSmb8", "views": 86767.0, "reach": null, "likes": 302.0, "comments": 24.0, "shares": 48.0, "saves": null, "shares_per_1k": 0.55, "comments_per_1k": 0.28, "avg_watch_time_s": 163.0, "watch_through_pct": 29.5, "hold_3s_pct": null, "retention_25_pct": 53.3, "retention_50_pct": 45.9, "retention_100_pct": 18.2, "ctr_pct": 154.9, "seconds": 555, "source": "ai", "reason": "Hel episode med Simen Velle."}]}, "clips": {"summary": {"count": 14, "views_total": 297673.0, "median_views": 18391.0, "shares_per_1k": 9.34, "comments_per_1k": 0.29, "median_avg_watch_time_s": 16.28, "median_watch_through_pct": null, "median_hold_3s_pct": 55.0, "median_retention_25_pct": null, "median_retention_50_pct": null, "median_retention_100_pct": null}, "items": [{"account": "Loff", "platform": "instagram", "post_id": "17906273742551246", "published": "2026-09-25", "caption": "Snakk om å være like!\n🚨Ny episode ute på glanekassa🚨 Samarbeid med NHO👑", "url": "https://www.instagram.com/reel/DduHJFdodPO/", "views": 13566.0, "reach": 8654.0, "likes": 258.0, "comments": 4.0, "shares": 196.0, "saves": 15.0, "shares_per_1k": 14.45, "comments_per_1k": 0.29, "avg_watch_time_s": 16.28, "watch_through_pct": null, "hold_3s_pct": 50.3, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Samme klipp som TikTok 24.9 om at Fredrik og Petter er like, med NHO-samarbeid og ny episode – altså Mektig mat med makta."}, {"account": "Loff", "platform": "instagram", "post_id": "18378636904234079", "published": "2026-09-24", "caption": "3–4 dager er en fantastisk morsom alder 👶🏼👨‍🍼 Ny episode ute🚨Samarbeid med NHO👊🏼", "url": "https://www.instagram.com/reel/DdqixjnoFW-/", "views": 23479.0, "reach": 15017.0, "likes": 443.0, "comments": 8.0, "shares": 541.0, "saves": 23.0, "shares_per_1k": 23.04, "comments_per_1k": 0.34, "avg_watch_time_s": 16.77, "watch_through_pct": null, "hold_3s_pct": 55.0, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Samme klipp på Instagram med NHO-samarbeid."}, {"account": "Loff", "platform": "tiktok", "post_id": "7689027760043347222", "published": "2026-09-24", "caption": "3–4 dager er en fantastisk morsom alder 👶🏼👨‍🍼 Ny episode ute🚨", "url": "https://www.tiktok.com/@_loff__/video/7689027760043347222?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 22302.0, "reach": null, "likes": 924.0, "comments": 3.0, "shares": 197.0, "saves": null, "shares_per_1k": 8.83, "comments_per_1k": 0.13, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Klipp fra samme nye Stordalen-episode."}, {"account": "Loff", "platform": "tiktok", "post_id": "7689027230583819542", "published": "2026-09-24", "caption": "Har du også ting du ikke er fan av, er du HELT lik Fredrik og Petter. Ny episode ute 🚨", "url": "https://www.tiktok.com/@_loff__/video/7689027230583819542?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 4776.0, "reach": null, "likes": 248.0, "comments": 4.0, "shares": 62.0, "saves": null, "shares_per_1k": 12.98, "comments_per_1k": 0.84, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Klipp med Petter Stordalen fra den nye episoden."}, {"account": "Loff", "platform": "instagram", "post_id": "17903166402353000", "published": "2026-09-23", "caption": "I hvilken grad er formuesskatten cringe? Samarbeid med NHO🍊", "url": "https://www.instagram.com/reel/DdoWGV3oFUv/", "views": 11703.0, "reach": 8926.0, "likes": 158.0, "comments": 1.0, "shares": 68.0, "saves": 13.0, "shares_per_1k": 5.81, "comments_per_1k": 0.09, "avg_watch_time_s": 19.19, "watch_through_pct": null, "hold_3s_pct": 48.7, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Formuesskatt-klipp med NHO-samarbeid, samme som Simen Velle-episoden."}, {"account": "Loff", "platform": "instagram", "post_id": "18133321606653363", "published": "2026-09-19", "caption": "Barth Eides serieanbefalinger. NB SPOILER ALERT!", "url": "https://www.instagram.com/reel/DddTAprIfok/", "views": 14480.0, "reach": 10345.0, "likes": 164.0, "comments": 2.0, "shares": 155.0, "saves": 10.0, "shares_per_1k": 10.7, "comments_per_1k": 0.14, "avg_watch_time_s": 13.33, "watch_through_pct": null, "hold_3s_pct": 57.4, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Samme Barth Eide-klipp postet på Instagram samme dag."}, {"account": "Loff", "platform": "tiktok", "post_id": "7687115158006549782", "published": "2026-09-19", "caption": "Barth Eide og Mango Mussolini 🍊💇", "url": "https://www.tiktok.com/@_loff__/video/7687115158006549782?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 2692.0, "reach": null, "likes": 99.0, "comments": 3.0, "shares": 21.0, "saves": null, "shares_per_1k": 7.8, "comments_per_1k": 1.11, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Barth Eide om Trump/toll, tema fra episoden."}, {"account": "Loff", "platform": "tiktok", "post_id": "7687112241627286806", "published": "2026-09-19", "caption": "Barth Eides smalltalk-tips! Hva er ditt beste tips?", "url": "https://www.tiktok.com/@_loff__/video/7687112241627286806?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 6470.0, "reach": null, "likes": 142.0, "comments": 0.0, "shares": 21.0, "saves": null, "shares_per_1k": 3.25, "comments_per_1k": 0.0, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Klipp med Barth Eide fra samme episode."}, {"account": "Loff", "platform": "tiktok", "post_id": "7687111283673550102", "published": "2026-09-19", "caption": "Barth Eides bordskikk og spisestil etikette. Ta notater!", "url": "https://www.tiktok.com/@_loff__/video/7687111283673550102?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 32099.0, "reach": null, "likes": 607.0, "comments": 4.0, "shares": 231.0, "saves": null, "shares_per_1k": 7.2, "comments_per_1k": 0.12, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Outtake med Barth Eide, samme episode."}, {"account": "Loff", "platform": "tiktok", "post_id": "7687110573959466262", "published": "2026-09-19", "caption": "Espen Barth Eides serienabefalinger. NB! SPOILER ALERT!", "url": "https://www.tiktok.com/@_loff__/video/7687110573959466262?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 4841.0, "reach": null, "likes": 132.0, "comments": 1.0, "shares": 35.0, "saves": null, "shares_per_1k": 7.23, "comments_per_1k": 0.21, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Klipp med gjesten Espen Barth Eide fra Mektig mat med makta."}, {"account": "Loff", "platform": "instagram", "post_id": "18097758983561149", "published": "2026-09-12", "caption": "Hvis det skulle være noen tvil om hvem som har fått mer eller mindre toll fra den oransje bassen over dammen, så har Fredrik regnet på det og Espen har sett over. Nå ligger det to episoder av Nammenam spinoffen «Mektig mat med makta» ute på tubern. Et godt betalt samarbeid med NHO som bare gir og gir.", "url": "https://www.instagram.com/reel/DdLdRmRI93r/", "views": 22465.0, "reach": 14828.0, "likes": 329.0, "comments": 2.0, "shares": 253.0, "saves": 20.0, "shares_per_1k": 11.26, "comments_per_1k": 0.09, "avg_watch_time_s": 13.96, "watch_through_pct": null, "hold_3s_pct": 61.7, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Klipp og kunngjøring om de to episodene av Mektig mat med makta."}, {"account": "Loff", "platform": "tiktok", "post_id": "7677601249658785046", "published": "2026-08-24", "caption": "Rydde litt i all forvirring rundt tollsatsene til appelsinen i det hvite hus🍊💇 Mye løses med å kunne regne opp i mente 🤝 samarbeid med NHO💸", "url": "https://www.tiktok.com/@_loff__/video/7677601249658785046?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 53957.0, "reach": null, "likes": 1791.0, "comments": 27.0, "shares": 437.0, "saves": null, "shares_per_1k": 8.1, "comments_per_1k": 0.5, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Toll og Trump i NHO-samarbeid, klipp fra episoden."}, {"account": "Loff", "platform": "tiktok", "post_id": "7675654644827278614", "published": "2026-08-19", "caption": "Greit å ha selvinnsikt nok til å vite hvem man er i guttegjengen. Espen har i hvert fall full oversikt 🤝 Samarbeid med NHO ", "url": "https://www.tiktok.com/@_loff__/video/7675654644827278614?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 26088.0, "reach": null, "likes": 1144.0, "comments": 9.0, "shares": 215.0, "saves": null, "shares_per_1k": 8.24, "comments_per_1k": 0.34, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "NHO-samarbeid med Espen Barth Eide, klipp fra episoden."}, {"account": "Loff", "platform": "tiktok", "post_id": "7673928465971744022", "published": "2026-08-14", "caption": "Hvorfor er formuesskatten så cringe?💸 @Simen Velle Samarbeid med NHO🥂", "url": "https://www.tiktok.com/@_loff__/video/7673928465971744022?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "views": 58755.0, "reach": null, "likes": 3237.0, "comments": 19.0, "shares": 348.0, "saves": null, "shares_per_1k": 5.92, "comments_per_1k": 0.32, "avg_watch_time_s": null, "watch_through_pct": null, "hold_3s_pct": null, "retention_25_pct": null, "retention_50_pct": null, "retention_100_pct": null, "ctr_pct": null, "seconds": null, "source": "ai", "reason": "Formuesskatt med Simen Velle og NHO-samarbeid, klipp fra episoden."}], "by_platform": {"instagram": {"count": 5, "views_total": 85693.0, "median_views": 14480.0, "shares_per_1k": 14.16, "comments_per_1k": 0.2, "median_avg_watch_time_s": 16.28, "median_watch_through_pct": null, "median_hold_3s_pct": 55.0, "median_retention_25_pct": null, "median_retention_50_pct": null, "median_retention_100_pct": null}, "tiktok": {"count": 9, "views_total": 211980.0, "median_views": 22302.0, "shares_per_1k": 7.39, "comments_per_1k": 0.33, "median_avg_watch_time_s": null, "median_watch_through_pct": null, "median_hold_3s_pct": null, "median_retention_25_pct": null, "median_retention_50_pct": null, "median_retention_100_pct": null}}}, "by_account": {}, "clip_view_share": 0.6422, "engagement": {"total": 13653, "likes": 10497, "comments": 140, "shares": 2935, "saves": 81, "rate_pct": 2.95, "top": {"caption": "Hvorfor er formuesskatten så cringe?💸 @Simen Velle Samarbeid med NHO🥂", "url": "https://www.tiktok.com/@_loff__/video/7673928465971744022?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "platform": "tiktok", "views": 58755.0, "engagements": 3604}, "best_rate": {"caption": "Hvorfor er formuesskatten så cringe?💸 @Simen Velle Samarbeid med NHO🥂", "url": "https://www.tiktok.com/@_loff__/video/7673928465971744022?utm_campaign=tt4d_open_api&utm_source=sbawmfyx4yxmxrkb1r", "platform": "tiktok", "views": 58755.0, "rate_pct": 6.1}}, "clip_reach": {"posts_with_reach": 5, "instagram_posts": 5, "median": 10345, "top": {"caption": "3–4 dager er en fantastisk morsom alder 👶🏼👨‍🍼 Ny episode ute🚨Samarbeid med NHO👊🏼", "url": "https://www.instagram.com/reel/DdqixjnoFW-/", "platform": "instagram", "views": 23479.0, "reach": 15017.0}}, "labels": [{"source": "ai", "n": 17}]};
 const NAMES = { instagram: "Instagram", youtube: "YouTube", tiktok: "TikTok" };
 const nf = new Intl.NumberFormat("nb-NO");
 const nf1 = new Intl.NumberFormat("nb-NO", { maximumFractionDigits: 1 });
@@ -281,8 +647,8 @@ const CLIENT = !!DATA.client;
 // Kundesiden viser bare oppsummeringen: kort, publikum og plattformtabell.
 // Kundesiden viser ikke «Spør om tallene» – den er intern.
 if (CLIENT) document.querySelector(".ask").hidden = true;
-if (CLIENT) ["episodes-panel", "clips-panel", "explain-panel"]
-  .forEach(id => { document.getElementById(id).hidden = true; });
+const SKJUL_FOR_KUNDE = ["episodes-panel", "clips-panel", "explain-panel"];
+if (CLIENT) SKJUL_FOR_KUNDE.forEach(id => { document.getElementById(id).hidden = true; });
 const E = DATA.episodes, C = DATA.clips;
 document.getElementById("logo").alt = DATA.account;
 document.getElementById("project-name").textContent = DATA.name;
@@ -499,6 +865,33 @@ table("clips", [
 })();
 
 // Chatten får oppsummeringene og de mest sette innleggene – ikke hele listen, som kan være tusenvis av rader.
+// Dagstall finnes bare for prosjekter med egne kontoer (f.eks. Skinny E). Uten dem fjernes hele seksjonen.
+const kurveBoks = document.querySelector('[data-view="utvikling"]');
+if (kurveBoks) {
+  const dager = DATA.daily || [];
+  if (dager.length && typeof initChart === "function") {
+    const rekkefølge = ["instagram", "youtube", "tiktok"].filter(pl => dager.some(r => r.platform === pl));
+    let kurveState = { metric: "views", range: "90" };
+    try { Object.assign(kurveState, JSON.parse(localStorage.getItem("loff-kurve-" + DATA.prosjekt) || "{}")); } catch (e) {}
+    const lagre = () => { try { localStorage.setItem("loff-kurve-" + DATA.prosjekt, JSON.stringify(kurveState)); } catch (e) {} };
+    window.prosjektKurve = initChart({ daily: dager, posts: DATA.posts_timeline || [], order: rekkefølge, names: NAMES,
+                              generated: DATA.generated, state: kurveState, save: lagre });
+    kurveBoks.querySelector("h2").textContent =
+      `Utvikling per dag – ${DATA.own_accounts.length ? DATA.own_accounts[0].account : DATA.name} sine egne kontoer`;
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => prosjektKurve.draw());
+  } else {
+    kurveBoks.remove();
+  }
+}
+
+// Kundesiden: panelene fjernes helt når tabellene er ferdig tegnet. Bare å skjule dem holder ikke –
+// visningsknappene under ville ellers kunne hente dem fram igjen.
+if (CLIENT) SKJUL_FOR_KUNDE.forEach(id => { const el = document.getElementById(id); if (el) el.remove(); });
+
+// Knappene settes opp til slutt, når paneler uten innhold er fjernet.
+initViews(["oversikt", "utvikling", "innhold", "publikum", "metode", "spor"], "loff-view-" + (DATA.prosjekt || "p"),
+          v => { if (v === "utvikling" && window.prosjektKurve) prosjektKurve.draw(); });
+
 if (!CLIENT && typeof initChat === "function") {
   const trim = (items, n) => [...items].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, n);
   initChat(CHAT_ENDPOINT, DATA.name, () => ({
